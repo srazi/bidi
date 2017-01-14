@@ -855,7 +855,6 @@ by Vafa Khalighi.
 %\begin{BDef}
 %\Lcs{LTRsidenote}\quad\Lcs{RTLsidenote}\quad\Lcs{LTRmarginnote}\quad\Lcs{RTLmarginnote}
 %\end{BDef}
-%\item  \textsf{biditufte-book} and \textsf{biditufte-handout} classes provide two extra options; \textsf{RTLgeometry} (active when loading either of classes) and \textsf{LTRgeometry}.
 %\item \textsf{biditufte} bundle unlike \textsf{tufts-latex} package, only provides justified lines.
 %\item Some features of \textsf{tufte-latex} that does not make any sense in RTL, do not exist in \textsf{biditufte} bundle (no need for \textsf{soul}, \textsf{letterspace} and \textsf{macrotype} packages).
 %\item If you want to configure \textsf{biditufte-book} class for your own needs, then you can create a file with the name \texttt{biditufte-book.cfg} and put your \LaTeX{} macros in that file; similarly, if you want to configure \textsf{biditufte-handout} class for your own needs, then you can create a file with the name \texttt{biditufte-handout.cfg} and put your \LaTeX{} macros in that file.
@@ -5148,10 +5147,6 @@ bidi implementation of tufte float]
 \newcommand{\bidituftefloatError}[2]{\PackageError{\@bidituftefloat@pkgname}{#1}{#2}}
 \newcommand{\bidituftefloatDebugInfoNL}[1]{\ifthenelse{\boolean{@bidituftefloat@debug}}{\bidituftefloatInfoNL{#1}}{}}
 \newcommand{\bidituftefloatInfoNL}[1]{\PackageInfo{\@bidituftefloat@pkgname}{#1\@gobble}}
-\newboolean{@bidituftefloat@RTLgeometry}
-\setboolean{@bidituftefloat@RTLgeometry}{true}
-\DeclareOption{RTLgeometry}{\setboolean{@bidituftefloat@RTLgeometry}{true}}
-\DeclareOption{LTRgeometry}{\setboolean{@bidituftefloat@RTLgeometry}{false}}
 \newboolean{@bidituftefloat@afourpaper}
 \DeclareOption{a4paper}{\setboolean{@bidituftefloat@afourpaper}{true}}
 \newboolean{@bidituftefloat@bfivepaper}
@@ -5207,21 +5202,13 @@ bidi implementation of tufte float]
   \setlength{\parskip}{0pt}%
 }
 \RequirePackage{ragged2e}
-\ifthenelse{\boolean{@bidituftefloat@RTLgeometry}}{%
-\RequirePackage[letterpaper,right=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
-\ifthenelse{\boolean{@bidituftefloat@afourpaper}}
-  {\geometry{a4paper,right=24.8mm,top=27.4mm,headsep=2\baselineskip,textwidth=107mm,marginparsep=8.2mm,marginparwidth=49.4mm,textheight=49\baselineskip,headheight=\baselineskip}}
-  {}
-\ifthenelse{\boolean{@bidituftefloat@bfivepaper}}
-  {\geometry{paperwidth=176mm,paperheight=250mm,right=14.66mm,top=13.88mm,textwidth=102.66mm,marginparsep=7.33mm,marginparwidth=36.66mm,textheight=38\baselineskip,includehead}}
-  {}}{%
 \RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
 \ifthenelse{\boolean{@bidituftefloat@afourpaper}}
   {\geometry{a4paper,left=24.8mm,top=27.4mm,headsep=2\baselineskip,textwidth=107mm,marginparsep=8.2mm,marginparwidth=49.4mm,textheight=49\baselineskip,headheight=\baselineskip}}
   {}
 \ifthenelse{\boolean{@bidituftefloat@bfivepaper}}
   {\geometry{paperwidth=176mm,paperheight=250mm,left=14.66mm,top=13.88mm,textwidth=102.66mm,marginparsep=7.33mm,marginparwidth=36.66mm,textheight=38\baselineskip,includehead}}
-  {}}
+  {}
 \ifthenelse{\boolean{@bidituftefloat@symmetric}}
   {}
   {\geometry{asymmetric}}% forces internal LaTeX `twoside'
