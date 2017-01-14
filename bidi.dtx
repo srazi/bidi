@@ -3010,6 +3010,25 @@ Bidirectional typesetting in plain TeX and LaTeX]
 \typeout{\@bidi@info}
 \edef\bidi@everyjob{\the\everyjob}
 \everyjob{\bidi@everyjob\typeout{\@bidi@info}}
+\edef\@bidi@strip@v@bidiversion{\expandafter\@gobble\bidiversion}
+\newcommand*{\IfbidiPackageVersionLater}[1]{%
+  \ifdim\@bidi@strip@v@bidiversion pt > #1 pt %
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+\newcommand*{\IfbidiPackageVersionBefore}[1]{%
+  \ifdim\@bidi@strip@v@bidiversion pt < #1 pt %
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
+\newcommand*{\IfbidiPackageVersion}[1]{%
+  \ifdim\@bidi@strip@v@bidiversion pt = #1 pt %
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi}
 \RequirePackage{iftex}
 \RequireXeTeX
 \RequirePackage{biditools}
@@ -4057,47 +4076,7 @@ ill-advised in the old versions of bidi package.%
   \else
     \expandafter\@secondoftwo
   \fi}
-
-\edef\@bidi@strip@v@bidiversion{\expandafter\@gobble\bidiversion}
-\newcommand*{\IfbidiPackageVersionLater}[1]{%
-  \ifdim\@bidi@strip@v@bidiversion pt > #1 pt %
-    \expandafter\@firstoftwo
-  \else
-    \expandafter\@secondoftwo
-  \fi}
-\newcommand*{\IfbidiPackageVersionBefore}[1]{%
-  \ifdim\@bidi@strip@v@bidiversion pt < #1 pt %
-    \expandafter\@firstoftwo
-  \else
-    \expandafter\@secondoftwo
-  \fi}
-\newcommand*{\IfbidiPackageVersion}[1]{%
-  \ifdim\@bidi@strip@v@bidiversion pt = #1 pt %
-    \expandafter\@firstoftwo
-  \else
-    \expandafter\@secondoftwo
-  \fi}
-
-\edef\@bidi@strip@v@xepersianversion{\expandafter\@gobble\xepersianversion}
-\newcommand*{\IfxepersianPackageVersionLater}[1]{%
-  \ifdim\@bidi@strip@v@xepersianversion pt > #1 pt %
-    \expandafter\@firstoftwo
-  \else
-    \expandafter\@secondoftwo
-  \fi}
-\newcommand*{\IfxepersianPackageVersionBefore}[1]{%
-  \ifdim\@bidi@strip@v@xepersianversion pt < #1 pt %
-    \expandafter\@firstoftwo
-  \else
-    \expandafter\@secondoftwo
-  \fi}
-\newcommand*{\IfxepersianPackageVersion}[1]{%
-  \ifdim\@bidi@strip@v@xepersianversion pt = #1 pt %
-    \expandafter\@firstoftwo
-  \else
-    \expandafter\@secondoftwo
-  \fi}  
-
+  
 \newcommand*{\if@bidi@csdef}[1]{%
   \ifcsname#1\endcsname
     \expandafter\@firstoftwo
