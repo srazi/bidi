@@ -13857,7 +13857,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{listings-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{listings-xetex-bidi.def}[2016/11/08 v1.3 bidi adaptations for listings package for XeTeX engine]
+\ProvidesFile{listings-xetex-bidi.def}[2017/01/14 v1.4 bidi adaptations for listings package for XeTeX engine]
 \lst@Key{captiondirection}{textdirection}{%
     \lstKV@SwitchCases{#1}%
     {textdirection&\\%
@@ -13865,9 +13865,9 @@ bidi implementation of tufte title]
      LTR&\chardef\bidi@lst@caption@direction\z@%
     }{\PackageError{Listings}{direction #1 unknown}\@ehc}}
     
-\lst@Key{captionscript}{latin}{%
+\lst@Key{captionscript}{textscript}{%
     \lstKV@SwitchCases{#1}%
-    {%
+    {textscript&\\%
      latin&\chardef\bidi@lst@caption@script\@ne\\%
      nonlatin&\chardef\bidi@lst@caption@script\z@%
     }{\PackageError{Listings}{direction #1 unknown}\@ehc}}
@@ -13882,14 +13882,20 @@ bidi implementation of tufte title]
          \fi%
      \fi%
 }}
-\long\def\@bidi@lst@makecaption#1#2{%
+
+\newcommand*{\bidi@lst@ensure@caption@script}[2]{%
+   \@ifundefined{bidi@lst@caption@script}{}{%
     \ifnum\bidi@lst@caption@script=\z@%
-        \@nonlatintrue%
+        #1%
     \else%
          \ifnum\bidi@lst@caption@script=\@ne%
-             \@nonlatinfalse%
+             #2%
          \fi%
      \fi%
+}}
+
+\long\def\@bidi@lst@makecaption#1#2{%
+   \bidi@lst@ensure@caption@script{\@nonlatintrue}{\@nonlatinfalse}%
    \vskip\abovecaptionskip
    \bidi@lst@ensure@caption@direction{\@RTLfalse}{\@RTLtrue}%
    \sbox\@tempboxa{%
@@ -13933,13 +13939,7 @@ bidi implementation of tufte title]
 }
 \@ifpackageloaded{caption}{%
   \AtBeginCaption{%
-      \ifnum\bidi@lst@caption@script=\z@%
-        \@nonlatintrue%
-    \else%
-         \ifnum\bidi@lst@caption@script=\@ne%
-             \@nonlatinfalse%
-         \fi%
-     \fi%
+  \bidi@lst@ensure@caption@script{\@nonlatintrue}{\@nonlatinfalse}%
   \bidi@lst@ensure@caption@direction{\@RTLfalse}{\@RTLtrue}%
 }
   \let\@bidi@lst@makecaption\caption@makecaption%
