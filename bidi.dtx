@@ -12791,7 +12791,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{geometry-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{geometry-xetex-bidi.def}[2013/04/01 v0.1 bidi adaptations for geometry package for XeTeX engine]
+\ProvidesFile{geometry-xetex-bidi.def}[2017/01/14 v0.2 bidi adaptations for geometry package for XeTeX engine]
 \renewcommand*{\Gm@vrules@mpi}{%
 \if@RTLmain%
         \hb@xt@\@tempdima{\hskip-\marginparwidth\hskip-\marginparsep
@@ -12812,7 +12812,27 @@ bidi implementation of tufte title]
   \llap{\Gm@vrule}\ignorespaces
   \hskip \marginparwidth\rlap{\Gm@vrule}\hskip \marginparsep
   \llap{\Gm@vrule}\hskip\textwidth\rlap{\Gm@vrule}\hss}\fi}%
-
+\bidi@patchcmd{\Gm@pageframes}{%
+     \ifodd\count\z@
+       \let\@themargin\oddsidemargin
+     \else
+       \let\@themargin\evensidemargin
+     \fi
+}{%
+     \ifodd\count\z@
+       \if@RTLmain
+         \let\@themargin\evensidemargin
+       \else
+         \let\@themargin\oddsidemargin
+       \fi
+     \else
+       \if@RTLmain
+         \let\@themargin\oddsidemargin
+       \else
+         \let\@themargin\evensidemargin
+       \fi
+     \fi
+}{}{}
 %    \end{macrocode}
 % \iffalse
 %</geometry-xetex-bidi.def>
@@ -22011,9 +22031,17 @@ $\@@underline{\hbox{#1}}\m@th$\relax\fi\fi}
   \fi
   \if@twoside
     \ifodd\count\z@ \let\@thehead\@oddhead \let\@thefoot\@oddfoot
+       \if@RTLmain
+          \let\@themargin\evensidemargin
+        \else
+          \let\@themargin\oddsidemargin
+        \fi
+    \else \let\@thehead\@evenhead \let\@thefoot\@evenfoot 
+       \if@RTLmain
          \let\@themargin\oddsidemargin
-    \else \let\@thehead\@evenhead
-       \let\@thefoot\@evenfoot \let\@themargin\evensidemargin
+       \else
+         \let\@themargin\evensidemargin
+       \fi
     \fi
     \ifx\@thehead\@empty \let\@thehead\hfil \fi
     \ifx\@thefoot\@empty \let\@thefoot\hfil \fi
