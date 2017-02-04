@@ -21979,6 +21979,9 @@ $\@@underline{\hbox{#1}}\m@th$\relax\fi\fi}
    \hbox to\linewidth{\if@RTL\beginR\fi\@itemfudge
    \hskip\dimen\@curtabmar\box\@curline\hfil\if@RTL\endR\fi}%
 \fi}
+
+\newcommand*{\bidi@font@@outputpage}{}
+
 \def\@outputpage{%
 \begingroup           % the \endgroup is put in by \aftergroup
   \let \protect \noexpand
@@ -22017,6 +22020,7 @@ $\@@underline{\hbox{#1}}\m@th$\relax\fi\fi}
   \fi
   \reset@font
   \normalsize
+  \bidi@font@@outputpage
   \normalsfcodes
   \let\label\@gobble
   \let\index\@gobble
