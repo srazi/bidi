@@ -1198,7 +1198,7 @@ by Vafa Khalighi.
 \long\def\@footnotetext#1{%
   \insert\footins{%
     \if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
-    \normalfont\footnotesize
+    \bidi@@footnotetext@font% \normalfont\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep \splitmaxdepth \dp\strutbox
     \floatingpenalty\@MM \hsize\columnwidth
@@ -1211,7 +1211,7 @@ by Vafa Khalighi.
 \long\def\@RTLfootnotetext#1{%
   \insert\footins{%
     \@RTLtrue%
-    \normalfont\footnotesize
+    \bidi@@RTLfootnotetext@font% \normalfont\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep \splitmaxdepth \dp\strutbox
     \floatingpenalty\@MM \hsize\columnwidth
@@ -1226,7 +1226,7 @@ by Vafa Khalighi.
 \long\def\@LTRfootnotetext#1{%
   \insert\footins{%
     \@RTLfalse%
-    \normalfont\footnotesize
+    \bidi@@LTRfootnotetext@font% \normalfont\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep \splitmaxdepth \dp\strutbox
     \floatingpenalty\@MM \hsize\columnwidth
@@ -1431,7 +1431,7 @@ by Vafa Khalighi.
 \long\def\@footnotetext#1{%
   \insert\footins{%
    \if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
-    \normalfont\footnotesize
+    \bidi@@footnotetext@font% \normalfont\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep \splitmaxdepth \dp\strutbox
     \floatingpenalty\@MM \hsize\columnwidth
@@ -1444,7 +1444,7 @@ by Vafa Khalighi.
 \long\def\@RTLfootnotetext#1{%
   \insert\footins{%
    \@RTLtrue%
-    \normalfont\footnotesize
+    \bidi@@RTLfootnotetext@font% \normalfont\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep \splitmaxdepth \dp\strutbox
     \floatingpenalty\@MM \hsize\columnwidth
@@ -1458,7 +1458,7 @@ by Vafa Khalighi.
 \long\def\@LTRfootnotetext#1{%
   \insert\footins{%
    \@RTLfalse%
-    \normalfont\footnotesize
+    \bidi@@LTRfootnotetext@font% \normalfont\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep \splitmaxdepth \dp\strutbox
     \floatingpenalty\@MM \hsize\columnwidth
@@ -6035,7 +6035,7 @@ bidi implementation of tufte sidenote]
   \bidituftesidenotemarginpar{%
     \hbox{}\vspace*{#1}%
     \def\baselinestretch {\setspace@singlespace}%
-    \reset@font\footnotesize%
+    \bidi@@footnotetext@font% \reset@font\footnotesize%
     \@bidituftesidenote@margin@par% use parindent and parskip settings for marginal text
     \vspace*{-1\baselineskip}\noindent%
     \protected@edef\@currentlabel{%
@@ -6052,7 +6052,7 @@ bidi implementation of tufte sidenote]
   \LTRbidituftesidenotemarginpar{%
     \hbox{}\vspace*{#1}%
     \def\baselinestretch {\setspace@singlespace}%
-    \reset@font\footnotesize%
+    \bidi@@LTRfootnotetext@font% \reset@font\footnotesize%
     \@bidituftesidenote@margin@par% use parindent and parskip settings for marginal text
     \vspace*{-1\baselineskip}\noindent%
     \protected@edef\@currentlabel{%
@@ -6069,7 +6069,7 @@ bidi implementation of tufte sidenote]
   \RTLbidituftesidenotemarginpar{%
     \hbox{}\vspace*{#1}%
     \def\baselinestretch {\setspace@singlespace}%
-    \reset@font\footnotesize%
+    \bidi@@RTLfootnotetext@font% \reset@font\footnotesize%
     \@bidituftesidenote@margin@par% use parindent and parskip settings for marginal text
     \vspace*{-1\baselineskip}\noindent%
     \protected@edef\@currentlabel{%
@@ -12184,9 +12184,13 @@ bidi implementation of tufte title]
 \def\unsetfootnoteRL{\@RTL@footnotefalse}
 \def\setfootnoteLR{\unsetfootnoteRL}
 
+\newcommand*{\bidi@@footnotetext@font}{\reset@font\footnotesize}
+\newcommand*{\bidi@@LTRfootnotetext@font}{\reset@font\footnotesize}
+\newcommand*{\bidi@@RTLfootnotetext@font}{\reset@font\footnotesize}
+
 \long\def\@footnotetext#1{\insert\footins{%
     \if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
-    \reset@font\footnotesize
+    \bidi@@footnotetext@font% \reset@font\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep
     \splitmaxdepth \dp\strutbox \floatingpenalty \@MM
@@ -12202,7 +12206,7 @@ bidi implementation of tufte title]
 
 \long\def\@RTLfootnotetext#1{\insert\footins{%
     \@RTLtrue%
-    \reset@font\footnotesize
+    \bidi@@RTLfootnotetext@font% \reset@font\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep
     \splitmaxdepth \dp\strutbox \floatingpenalty \@MM
@@ -12217,7 +12221,7 @@ bidi implementation of tufte title]
 
 \long\def\@LTRfootnotetext#1{\insert\footins{%
     \@RTLfalse%
-    \reset@font\footnotesize
+    \bidi@@LTRfootnotetext@font% \reset@font\footnotesize
     \interlinepenalty\interfootnotelinepenalty
     \splittopskip\footnotesep
     \splitmaxdepth \dp\strutbox \floatingpenalty \@MM
@@ -12246,7 +12250,7 @@ bidi implementation of tufte title]
   \ifbidi@autofootnoterule\ifnum\c@mpfootnote=\@ne\global\let\bidi@mpfootnoterule\right@footnoterule\fi\fi%
   \global\setbox\@mpfootins\vbox{\@RTLtrue%
     \unvbox\@mpfootins
-    \reset@font\footnotesize
+    \bidi@@RTLfootnotetext@font% \reset@font\footnotesize
     \hsize\columnwidth
     \@parboxrestore
     \protected@edef\@currentlabel
@@ -12259,7 +12263,7 @@ bidi implementation of tufte title]
  \ifbidi@autofootnoterule\ifnum\c@mpfootnote=\@ne\global\let\bidi@mpfootnoterule\left@footnoterule\fi\fi%
   \global\setbox\@mpfootins\vbox{\@RTLfalse%
     \unvbox\@mpfootins
-    \reset@font\footnotesize
+    \bidi@@LTRfootnotetext@font% \reset@font\footnotesize
     \hsize\columnwidth
     \@parboxrestore
     \protected@edef\@currentlabel
@@ -12272,7 +12276,7 @@ bidi implementation of tufte title]
  \ifbidi@autofootnoterule\ifnum\c@mpfootnote=\@ne\if@RTL@footnote\global\let\bidi@mpfootnoterule\right@footnoterule\else\global\let\bidi@mpfootnoterule\left@footnoterule\fi\fi\fi%
   \global\setbox\@mpfootins\vbox{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
     \unvbox\@mpfootins
-    \reset@font\footnotesize
+    \bidi@@footnotetext@font% \reset@font\footnotesize
     \hsize\columnwidth
     \@parboxrestore
     \protected@edef\@currentlabel
