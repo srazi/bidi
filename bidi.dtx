@@ -5824,15 +5824,27 @@ bidi implementation of tufte sidenote]
         \@minipagetrue
         \everypar{\@minipagefalse\everypar{}\beginR}%
 }
-\newcommand{\@bidituftesidenote@marginfont}{\normalfont\footnotesize}
+\newcommand*{\@bidituftesidenote@marginfont}{\normalfont\footnotesize}
+\newcommand*{\@bidituftesidenote@LTRmarginfont}{\normalfont\footnotesize}
+\newcommand*{\@bidituftesidenote@RTLmarginfont}{\normalfont\footnotesize}
 \newcommand*{\@bidituftesidenote@sidenote@font}{\@bidituftesidenote@marginfont}
+\newcommand*{\@bidituftesidenote@LTRsidenote@font}{\@bidituftesidenote@LTRmarginfont}
+\newcommand*{\@bidituftesidenote@RTLsidenote@font}{\@bidituftesidenote@RTLmarginfont}
 \newcommand*{\@bidituftesidenote@marginnote@font}{\@bidituftesidenote@marginfont}
+\newcommand*{\@bidituftesidenote@LTRmarginnote@font}{\@bidituftesidenote@LTRmarginfont}
+\newcommand*{\@bidituftesidenote@RTLmarginnote@font}{\@bidituftesidenote@RTLmarginfont}
 \newcommand*{\@bidituftesidenote@citation@font}{\@bidituftesidenote@marginfont}
-\newcommand*{\@biditufteLTRsidenote@citation@font}{\@bidituftesidenote@marginfont}
+\newcommand*{\@bidituftesidenote@LTRcitation@font}{\@bidituftesidenote@LTRmarginfont}
+\newcommand*{\@bidituftesidenote@RTLcitation@font}{\@bidituftesidenote@RTLmarginfont}
 \newcommand*{\setsidenotefont}[1]{\renewcommand*{\@bidituftesidenote@sidenote@font}{#1}}
+\newcommand*{\setLTRsidenotefont}[1]{\renewcommand*{\@bidituftesidenote@LTRsidenote@font}{#1}}
+\newcommand*{\setRTLsidenotefont}[1]{\renewcommand*{\@bidituftesidenote@RTLsidenote@font}{#1}}
 \newcommand*{\setmarginnotefont}[1]{\renewcommand*{\@bidituftesidenote@marginnote@font}{#1}}
+\newcommand*{\setLTRmarginnotefont}[1]{\renewcommand*{\@bidituftesidenote@LTRmarginnote@font}{#1}}
+\newcommand*{\setRTLmarginnotefont}[1]{\renewcommand*{\@bidituftesidenote@RTLmarginnote@font}{#1}}
 \newcommand*{\setcitationfont}[1]{\renewcommand*{\@bidituftesidenote@citation@font}{#1}}
 \newcommand*{\setLTRcitationfont}[1]{\renewcommand*{\@biditufteLTRsidenote@citation@font}{#1}}
+\newcommand*{\setRTLcitationfont}[1]{\renewcommand*{\@biditufteRTLsidenote@citation@font}{#1}}
 \newcommand*{\@bidituftesidenote@sidenote@justification}{\@bidituftesidenote@justification@autodetect}
 \newcommand*{\@bidituftesidenote@marginnote@justification}{\@bidituftesidenote@justification@autodetect}
 \newcommand*{\@bidituftesidenote@citation@justification}{\@bidituftesidenote@justification@autodetect}
@@ -6197,7 +6209,7 @@ bidi implementation of tufte sidenote]
 \newcommand\LTRmarginnote[2][0pt]{%
   \let\cite\@bidituftesidenote@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@bidituftesidenote@citations{}%           clear out any old citations
-  \LTRbidituftesidenotemarginpar{\hbox{}\vspace*{#1}\@bidituftesidenote@marginnote@font\@bidituftesidenote@marginnote@justification\@bidituftesidenote@margin@par\vspace*{-1\baselineskip}\noindent #2}%
+  \LTRbidituftesidenotemarginpar{\hbox{}\vspace*{#1}\@bidituftesidenote@LTRmarginnote@font\@bidituftesidenote@marginnote@justification\@bidituftesidenote@margin@par\vspace*{-1\baselineskip}\noindent #2}%
   \@bidituftesidenote@print@citations%            print any citations
   \let\cite\@bidituftesidenote@normal@cite%       go back to using normal in-text \cite command
   \let\LTRcite\@biditufteLTRsidenote@normal@cite%       go back to using normal in-text \LTRcite command
@@ -6206,7 +6218,7 @@ bidi implementation of tufte sidenote]
 \newcommand\RTLmarginnote[2][0pt]{%
   \let\cite\@bidituftesidenote@infootnote@cite%   use the in-sidenote \cite command
   \gdef\@bidituftesidenote@citations{}%           clear out any old citations
-  \RTLbidituftesidenotemarginpar{\hbox{}\vspace*{#1}\@bidituftesidenote@marginnote@font\@bidituftesidenote@marginnote@justification\@bidituftesidenote@margin@par\vspace*{-1\baselineskip}\noindent #2}%
+  \RTLbidituftesidenotemarginpar{\hbox{}\vspace*{#1}\@bidituftesidenote@RTLmarginnote@font\@bidituftesidenote@marginnote@justification\@bidituftesidenote@margin@par\vspace*{-1\baselineskip}\noindent #2}%
   \@bidituftesidenote@print@citations%            print any citations
   \let\cite\@bidituftesidenote@normal@cite%       go back to using normal in-text \cite command
   \let\LTRcite\@biditufteLTRsidenote@normal@cite%       go back to using normal in-text \LTRcite command
