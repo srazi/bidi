@@ -5126,6 +5126,9 @@ bidi implementation of tufte float]
 \newcommand{\bidituftefloatError}[2]{\PackageError{\@bidituftefloat@pkgname}{#1}{#2}}
 \newcommand{\bidituftefloatDebugInfoNL}[1]{\ifthenelse{\boolean{@bidituftefloat@debug}}{\bidituftefloatInfoNL{#1}}{}}
 \newcommand{\bidituftefloatInfoNL}[1]{\PackageInfo{\@bidituftefloat@pkgname}{#1\@gobble}}
+\newboolean{@bidituftefloat@reversegeometry}
+\setboolean{@bidituftefloat@reversegeometry}{false}
+\DeclareOption{reversegeometry}{\setboolean{@bidituftefloat@reversegeometry}{true}}
 \newboolean{@bidituftefloat@afourpaper}
 \DeclareOption{a4paper}{\setboolean{@bidituftefloat@afourpaper}{true}}
 \newboolean{@bidituftefloat@bfivepaper}
@@ -5181,13 +5184,21 @@ bidi implementation of tufte float]
   \setlength{\parskip}{0pt}%
 }
 \RequirePackage{ragged2e}
+\ifthenelse{\boolean{@bidituftefloat@reversegeometry}}{%
+\RequirePackage[letterpaper,right=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
+\ifthenelse{\boolean{@bidituftefloat@afourpaper}}
+  {\geometry{a4paper,right=24.8mm,top=27.4mm,headsep=2\baselineskip,textwidth=107mm,marginparsep=8.2mm,marginparwidth=49.4mm,textheight=49\baselineskip,headheight=\baselineskip}}
+  {}
+\ifthenelse{\boolean{@bidituftefloat@bfivepaper}}
+  {\geometry{paperwidth=176mm,paperheight=250mm,right=14.66mm,top=13.88mm,textwidth=102.66mm,marginparsep=7.33mm,marginparwidth=36.66mm,textheight=38\baselineskip,includehead}}
+  {}}{%
 \RequirePackage[letterpaper,left=1in,top=1in,headsep=2\baselineskip,textwidth=26pc,marginparsep=2pc,marginparwidth=12pc,textheight=44\baselineskip,headheight=\baselineskip]{geometry}
 \ifthenelse{\boolean{@bidituftefloat@afourpaper}}
   {\geometry{a4paper,left=24.8mm,top=27.4mm,headsep=2\baselineskip,textwidth=107mm,marginparsep=8.2mm,marginparwidth=49.4mm,textheight=49\baselineskip,headheight=\baselineskip}}
   {}
 \ifthenelse{\boolean{@bidituftefloat@bfivepaper}}
   {\geometry{paperwidth=176mm,paperheight=250mm,left=14.66mm,top=13.88mm,textwidth=102.66mm,marginparsep=7.33mm,marginparwidth=36.66mm,textheight=38\baselineskip,includehead}}
-  {}
+  {}}
 \ifthenelse{\boolean{@bidituftefloat@symmetric}}
   {}
   {\geometry{asymmetric}}% forces internal LaTeX `twoside'
