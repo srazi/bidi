@@ -1137,7 +1137,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{47767}
+%% \CheckSum{47769}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -4078,10 +4078,10 @@ ill-advised in the old versions of bidi package.%
   \fi}
   
 \newcommand*{\bidi@@convert@dimen@t@unit}[2]{%
-    \strip@pt\dimexpr #1*65536/\number\dimexpr 1#2\relax#2}
+    \strip@pt\dimexpr #1*65536/\dimexpr 1#2\relax #2}
   
 \newcommand*{\bidi@@convert@dimen@t@pt}[1]{%
-    \dimexpr #1*65536/\number\dimexpr 1pt\relax}
+    \dimexpr #1*65536/\dimexpr 1pt\relax}
   
 \newcommand*{\if@bidi@csdef}[1]{%
   \ifcsname#1\endcsname
