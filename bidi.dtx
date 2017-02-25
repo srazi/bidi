@@ -4078,10 +4078,10 @@ ill-advised in the old versions of bidi package.%
   \fi}
   
 \newcommand*{\bidi@@convert@dimen@t@unit}[2]{%
-    \dimexpr #1*65536/\number\dimexpr 1#2\relax}
+    \strip@pt\dimexpr #1*65536/\number\dimexpr 1#2\relax#2}
   
 \newcommand*{\bidi@@convert@dimen@t@pt}[1]{%
-    \bidi@@convert@dimen@t@unit{#1}{pt}}
+    \dimexpr #1*65536/\number\dimexpr 1pt\relax}
   
 \newcommand*{\if@bidi@csdef}[1]{%
   \ifcsname#1\endcsname
