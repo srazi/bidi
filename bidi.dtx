@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v30.1
+v30.2
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/02/25
+Current version release date: 2017/03/03
 
 ___________________
 Vafa Khalighi
@@ -321,7 +321,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 30.1}}
+%\large Documentation for \textcolor{blue!65!black}{version 30.2}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}}
 %\setcounter{page}{0}
@@ -332,7 +332,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 30.1}}
+%Documentation for \textcolor{blue!65!black}{version 30.2}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -383,7 +383,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/02/25, v30.1
+%* 2017/03/03, v30.2
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1137,7 +1137,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{47769}
+%% \CheckSum{47778}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2980,8 +2980,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/02/25}
-\def\bidiversion{v30.1}
+\def\bididate{2017/03/03}
+\def\bidiversion{v30.2}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -11264,12 +11264,17 @@ bidi implementation of tufte title]
   \let\@mpRTLfootnotetext\@mpparaRTLfootnotetext
   \m@make@mppara@footgroup{v@r}%
   \let\mp@footgroupv@r\@mppara@footgroupv@r
-  {\def\baselinestretch{\m@m@footnote@spacing}%
+  \begingroup
+  \def\baselinestretch{\m@m@footnote@spacing}%
    \foottextfont
-   \dimen0=\baselineskip
-   \multiply\dimen0 by 1024
-   \divide\dimen0 by \hsize \multiply\dimen0 by \footfudgefiddle
-   \xdef\footfudgefactor{\expandafter\strip@pt\dimen0 }}}
+   \@tempdima\normalbaselineskip
+   \multiply \@tempdima \@cclvi
+   \@tempdimb \columnwidth
+   \divide \@tempdimb \@cclvi
+   \divide \@tempdima \@tempdimb
+   \xdef\footfudgefactor{\strip@pt\@tempdima}%
+   \endgroup
+  }
 \bidi@ensure@newcommand{\@parafootnotetext}[1]{\insert\footinsv@r{%
   \let\bidi@RTL@everypar\@empty%
   \def\baselinestretch{\m@m@footnote@spacing}%
@@ -11376,12 +11381,17 @@ bidi implementation of tufte title]
   \@namedef{@footstart#1}{\@nameuse{@para@footstart#1}}%
   \expandafter\dimen\csname footins#1\endcsname=\footinsdim
   \expandafter\count\csname footins#1\endcsname=1000\relax
-  {\def\baselinestretch{\m@m@footnote@spacing}%
-  \@nameuse{foottextfont#1}%
-   \dimen0=\baselineskip
-   \multiply\dimen0 by 1024
-   \divide\dimen0 by \hsize \multiply\dimen0 by 64
-   \xdef\footfudgefactor{\expandafter\strip@pt\dimen0 }}}
+  \begingroup
+  \def\baselinestretch{\m@m@footnote@spacing}%
+   \@nameuse{foottextfont#1}%
+   \@tempdima\normalbaselineskip
+   \multiply \@tempdima \@cclvi
+   \@tempdimb \columnwidth
+   \divide \@tempdimb \@cclvi
+   \divide \@tempdima \@tempdimb
+   \xdef\footfudgefactor{\strip@pt\@tempdima}%
+   \endgroup
+  }
 \bidi@ensure@newcommand{\m@make@parafootnotetext}[1]{%
 \bidi@namelongdef{@parafootnotetext#1}##1{%
   \insert\@nameuse{footins#1}{
