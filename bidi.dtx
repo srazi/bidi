@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v30.2
+v30.3
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/03/03
+Current version release date: 2017/04/27
 
 ___________________
 Vafa Khalighi
@@ -321,7 +321,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 30.2}}
+%\large Documentation for \textcolor{blue!65!black}{version 30.3}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}}
 %\setcounter{page}{0}
@@ -332,7 +332,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 30.2}}
+%Documentation for \textcolor{blue!65!black}{version 30.3}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -383,7 +383,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/03/03, v30.2
+%* 2017/04/27, v30.3
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1137,7 +1137,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{47778}
+%% \CheckSum{47809}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2980,8 +2980,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/03/03}
-\def\bidiversion{v30.2}
+\def\bididate{2017/04/27}
+\def\bidiversion{v30.3}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -8203,7 +8203,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{cuted-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{cuted-xetex-bidi.def}[2016/05/10 v0.4 bidi adaptations for cuted package for XeTeX engine]
+\ProvidesFile{cuted-xetex-bidi.def}[2017/04/27 v0.5 bidi adaptations for cuted package for XeTeX engine]
 
 \def\RTL@outputdblcol{%
   \if@firstcolumn
@@ -8525,11 +8525,21 @@ bidi implementation of tufte title]
      \setbox\v@ccc\vbox to\@tempdimb{\vsplit\@holdpg to\@tempdimb\vss}%
      \setbox\@tempboxa\vbox{%
         \hb@xt@\textwidth {%
+           \if@RTLmain%
+           \hskip \columnwidth
+           \hfil \vrule width\columnseprule \hfil
+           \hb@xt@\columnwidth{\vbox to\ht@viper{\box\v@ccc\vss} \hss}%
+           \hskip -\textwidth
+           \hb@xt@\columnwidth {\vbox to\ht@viper{\box\@holdpg\vss} \hss}%
+           \hskip \columnsep
+           \hskip \columnwidth
+           \else
             \hb@xt@\columnwidth{\vbox to\ht@viper{\box\v@ccc\vss} \hss}%
             \hfil
             \vrule \@width\columnseprule
             \hfil
             \hb@xt@\columnwidth {\vbox to\ht@viper{\box\@holdpg\vss} \hss}%
+           \fi%
             }%
         }%
      \ifvoid\hold@viper
