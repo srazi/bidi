@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v30.4
+v30.5
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/05/06
+Current version release date: 2017/05/18
 
 ___________________
 Vafa Khalighi
@@ -322,9 +322,9 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 30.4}}
+%\large Documentation for \textcolor{blue!65!black}{version 30.5}}
 % \author{Vafa Khalighi\\
-%  \url{persian-tex@tug.org}
+%  \url{persian-tex@tug.org}\\
 %  \url{https://www.instagram.com/persiantex}}
 %\setcounter{page}{0}
 %\thispagestyle{empty}
@@ -334,7 +334,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 30.4}}
+%Documentation for \textcolor{blue!65!black}{version 30.5}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -385,7 +385,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/05/06, v30.4
+%* 2017/05/18, v30.5
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -397,6 +397,7 @@ by Vafa Khalighi.
 %* Support: persian-tex@tug.org
 %*
 %* Instagram: https://www.instagram.com/persiantex
+%*
 %****************************************************
 %\end{verbatim}
 %\part{\LaTeX\ Manual}
@@ -1141,7 +1142,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{47931}
+%% \CheckSum{47933}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2984,8 +2985,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/05/06}
-\def\bidiversion{v30.4}
+\def\bididate{2017/05/18}
+\def\bidiversion{v30.5}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -3012,6 +3013,7 @@ Bidirectional typesetting in plain TeX and LaTeX]
 * Support: persian-tex@tug.org^^J%
 * ^^J%
 * Instagram: https://www.instagram.com/persiantex^^J%
+* ^^J%
 ****************************************************}
 \typeout{\@bidi@info}
 \edef\bidi@everyjob{\the\everyjob}
@@ -3212,6 +3214,7 @@ Bidirectional typesetting in plain TeX and LaTeX]
 * Support: persian-tex@tug.org^^J%
 * ^^J%
 * Instagram: https://www.instagram.com/persiantex^^J%
+* ^^J%
 ****************************************************}
 \message{\@bidi@info}
 \edef\bidi@everyjob{\the\everyjob}
@@ -5158,7 +5161,7 @@ ill-advised in the old versions of bidi package.%
 % \subsection{\textsf{bidituftefloat.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{bidituftefloat}[2011/06/14 v0.1
+\ProvidesPackage{bidituftefloat}[2017/05/19 v0.2
 bidi implementation of tufte float]
 \RequirePackage{xifthen}
 \newcommand{\@bidituftefloat@pkgname}{bidituftefloat}
@@ -5375,8 +5378,13 @@ bidi implementation of tufte float]
     \renewcommand{\label}[1]{\@bidituftefloat@label{##1}}%
     % Handle subfigure package compatibility
     \ifthenelse{\boolean{@bidituftefloat@packages@subfigure}}{%
-      % don't move the label while inside a \subfigure or \subtable command
-      \global\let\label\@bidituftefloat@orig@label%
+      \bidi@patchcmd{\subfigure}{%
+      \let\subfig@oldlabel=\label
+      }{%
+      \let\subfig@oldlabel=\@bidituftefloat@orig@label
+      }
+      {}
+      {}
     }{}% subfigure package is not loaded
     \@bidituftefloat@orig@float{#2}[#1]%
     \ifthenelse{\boolean{@bidituftefloat@float@star}}%
