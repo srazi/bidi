@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v30.5
+v30.6
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/05/18
+Current version release date: 2017/05/19
 
 ___________________
 Vafa Khalighi
@@ -322,7 +322,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 30.5}}
+%\large Documentation for \textcolor{blue!65!black}{version 30.6}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}\\
 %  \url{https://www.instagram.com/persiantex}}
@@ -334,7 +334,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 30.5}}
+%Documentation for \textcolor{blue!65!black}{version 30.6}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -385,7 +385,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/05/18, v30.5
+%* 2017/05/19, v30.6
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1142,7 +1142,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{47933}
+%% \CheckSum{48021}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2985,8 +2985,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/05/18}
-\def\bidiversion{v30.5}
+\def\bididate{2017/05/19}
+\def\bidiversion{v30.6}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -9682,7 +9682,41 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{extrafootnotefeatures-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{extrafootnotefeatures-xetex-bidi.def}[2016/05/10 v1 bidi extra footnote features for XeTeX engine]
+\ProvidesFile{extrafootnotefeatures-xetex-bidi.def}[2017/05/19 v1.1 bidi extra footnote features for XeTeX engine]
+\newcommand*{\@bidi@before@Hy@hyperfootnotes}{%
+\if@bidi@csundef{ifHy@hyperfootnotes}{}{%
+\if@bidi@csundef{HLTR@@LTRfootnotetext}{}{%
+\ifHy@hyperfootnotes
+  \let\@@H@@footnotetext\@footnotetext
+  \let\@@HLTR@@LTRfootnotetext\@LTRfootnotetext
+  \let\@@HRTL@@RTLfootnotetext\@RTLfootnotetext
+  \let\@@H@@mpfootnotetext\@mpfootnotetext
+  \let\@@HLTR@@mpLTRfootnotetext\@mpLTRfootnotetext
+  \let\@@HRTL@@mpRTLfootnotetext\@mpRTLfootnotetext
+\fi
+}%
+}%
+}
+\newcommand*{\@bidi@after@Hy@hyperfootnotes}{%
+\if@bidi@csundef{ifHy@hyperfootnotes}{}{%
+\if@bidi@csundef{HLTR@@LTRfootnotetext}{}{%
+\ifHy@hyperfootnotes
+  \let\H@@footnotetext\@footnotetext
+  \let\@footnotetext\@@H@@footnotetext
+  \let\HLTR@@LTRfootnotetext\@LTRfootnotetext
+  \let\@LTRfootnotetext\@@HLTR@@LTRfootnotetext
+  \let\HRTL@@RTLfootnotetext\@RTLfootnotetext
+  \let\@RTLfootnotetext\@@HRTL@@RTLfootnotetext
+  \let\H@@mpfootnotetext\@mpfootnotetext
+  \let\@mpfootnotetext\@@H@@mpfootnotetext
+  \let\HLTR@@mpLTRfootnotetext\@mpLTRfootnotetext
+  \let\@mpLTRfootnotetext\@@HLTR@@mpLTRfootnotetext
+  \let\HRTL@@mpRTLfootnotetext\@mpRTLfootnotetext
+  \let\@mpRTLfootnotetext\@@HRTL@@mpRTLfootnotetext
+\fi
+}%
+}%
+}
 \let\autofootnoterule\relax
 \let\rightfootnoterule\relax
 \let\leftfootnoterule\relax
@@ -9786,12 +9820,14 @@ bidi implementation of tufte title]
 \let\m@mold@mpLTRfootnotetext\@mpLTRfootnotetext
 \let\m@mold@mpRTLfootnotetext\@mpRTLfootnotetext
 \bidi@ensure@newcommand{\normalfootnotes}{%
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\m@mold@footnotetext
   \let\@LTRfootnotetext\m@mold@LTRfootnotetext
   \let\@RTLfootnotetext\m@mold@RTLfootnotetext
   \let\@mpfootnotetext\m@mold@mpfootnotetext
   \let\@mpLTRfootnotetext\m@mold@mpLTRfootnotetext
-  \let\@mpRTLfootnotetext\m@mold@mpRTLfootnotetext}
+  \let\@mpRTLfootnotetext\m@mold@mpRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes}
 \@ifclassloaded{memoir}{\let\plainfootnotes\normalfootnotes}{}
 \bidi@ensure@newcommand*{\RTLcolumnfootnotes}{\@RTLcolumnfootnotestrue}
 \bidi@ensure@newcommand*{\LTRcolumnfootnotes}{\@RTLcolumnfootnotesfalse}
@@ -9928,6 +9964,7 @@ bidi implementation of tufte title]
   \unvbox2 }
 \bidi@ensure@newcommand{\twocolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@twocolfootnotetext
   \let\@LTRfootnotetext\@twocolLTRfootnotetext
   \let\@RTLfootnotetext\@twocolRTLfootnotetext
@@ -9938,6 +9975,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mptwocolfootnotetext
   \let\@mpLTRfootnotetext\@mptwocolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mptwocolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mptwocol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mptwocol@footgroupv@r}
 \bidi@ensure@newcommand{\@twocolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -10077,6 +10115,7 @@ bidi implementation of tufte title]
   \m@mrigidbalance{\@nameuse{@mpfootins#1}}{\tw@}{\splittopskip}}}}
 \bidi@ensure@newcommand{\threecolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@threecolfootnotetext
   \let\@LTRfootnotetext\@threecolLTRfootnotetext
   \let\@RTLfootnotetext\@threecolRTLfootnotetext
@@ -10087,6 +10126,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mpthreecolfootnotetext
   \let\@mpLTRfootnotetext\@mpthreecolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mpthreecolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mpthreecol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mpthreecol@footgroupv@r}
 \bidi@ensure@newcommand{\@threecolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -10219,6 +10259,7 @@ bidi implementation of tufte title]
   \m@mrigidbalance{\@nameuse{@mpfootins#1}}{\thr@@}{\splittopskip}}}}
 \bidi@ensure@newcommand{\fourcolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@fourcolfootnotetext
   \let\@LTRfootnotetext\@fourcolLTRfootnotetext
   \let\@RTLfootnotetext\@fourcolRTLfootnotetext
@@ -10229,6 +10270,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mpfourcolfootnotetext
   \let\@mpLTRfootnotetext\@mpfourcolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mpfourcolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mpfourcol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mpfourcol@footgroupv@r}
 \bidi@ensure@newcommand{\@fourcolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -10368,6 +10410,7 @@ bidi implementation of tufte title]
   \m@mrigidbalance{\@nameuse{@mpfootins#1}}{4}{\splittopskip}}}}
 \bidi@ensure@newcommand{\fivecolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@fivecolfootnotetext
   \let\@LTRfootnotetext\@fivecolLTRfootnotetext
   \let\@RTLfootnotetext\@fivecolRTLfootnotetext
@@ -10378,6 +10421,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mpfivecolfootnotetext
   \let\@mpLTRfootnotetext\@mpfivecolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mpfivecolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mpfivecol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mpfivecol@footgroupv@r}
 \bidi@ensure@newcommand{\@fivecolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -10517,6 +10561,7 @@ bidi implementation of tufte title]
   \m@mrigidbalance{\@nameuse{@mpfootins#1}}{5}{\splittopskip}}}}
 \bidi@ensure@newcommand{\sixcolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@sixcolfootnotetext
   \let\@LTRfootnotetext\@sixcolLTRfootnotetext
   \let\@RTLfootnotetext\@sixcolRTLfootnotetext
@@ -10527,6 +10572,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mpsixcolfootnotetext
   \let\@mpLTRfootnotetext\@mpsixcolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mpsixcolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mpsixcol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mpsixcol@footgroupv@r}
 \bidi@ensure@newcommand{\@sixcolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -10666,6 +10712,7 @@ bidi implementation of tufte title]
   \m@mrigidbalance{\@nameuse{@mpfootins#1}}{6}{\splittopskip}}}}
 \bidi@ensure@newcommand{\sevencolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@sevencolfootnotetext
   \let\@LTRfootnotetext\@sevencolLTRfootnotetext
   \let\@RTLfootnotetext\@sevencolRTLfootnotetext
@@ -10676,6 +10723,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mpsevencolfootnotetext
   \let\@mpLTRfootnotetext\@mpsevencolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mpsevencolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mpsevencol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mpsevencol@footgroupv@r}
 \bidi@ensure@newcommand{\@sevencolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -10815,6 +10863,7 @@ bidi implementation of tufte title]
   \m@mrigidbalance{\@nameuse{@mpfootins#1}}{7}{\splittopskip}}}}
 \bidi@ensure@newcommand{\eightcolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@eightcolfootnotetext
   \let\@LTRfootnotetext\@eightcolLTRfootnotetext
   \let\@RTLfootnotetext\@eightcolRTLfootnotetext
@@ -10825,6 +10874,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mpeightcolfootnotetext
   \let\@mpLTRfootnotetext\@mpeightcolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mpeightcolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mpeightcol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mpeightcol@footgroupv@r}
 \bidi@ensure@newcommand{\@eightcolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -10964,6 +11014,7 @@ bidi implementation of tufte title]
   \m@mrigidbalance{\@nameuse{@mpfootins#1}}{8}{\splittopskip}}}}
 \bidi@ensure@newcommand{\ninecolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@ninecolfootnotetext
   \let\@LTRfootnotetext\@ninecolLTRfootnotetext
   \let\@RTLfootnotetext\@ninecolRTLfootnotetext
@@ -10974,6 +11025,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mpninecolfootnotetext
   \let\@mpLTRfootnotetext\@mpninecolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mpninecolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mpninecol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mpninecol@footgroupv@r}
 \bidi@ensure@newcommand{\@ninecolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -11113,6 +11165,7 @@ bidi implementation of tufte title]
   \m@mrigidbalance{\@nameuse{@mpfootins#1}}{9}{\splittopskip}}}}
 \bidi@ensure@newcommand{\tencolumnfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@tencolfootnotetext
   \let\@LTRfootnotetext\@tencolLTRfootnotetext
   \let\@RTLfootnotetext\@tencolRTLfootnotetext
@@ -11123,6 +11176,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mptencolfootnotetext
   \let\@mpLTRfootnotetext\@mptencolLTRfootnotetext
   \let\@mpRTLfootnotetext\@mptencolRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mptencol@footgroup{v@r}%
   \let\mp@footgroupv@r\@mptencol@footgroupv@r}
 \bidi@ensure@newcommand{\@tencolfootnotetext}[1]{\insert\footinsv@r{\if@RTL@footnote\@RTLtrue\else\@RTLfalse\fi%
@@ -11304,6 +11358,7 @@ bidi implementation of tufte title]
 \bidi@ensure@newcommand*{\footfudgefiddle}{64}
 \bidi@ensure@newcommand{\paragraphfootnotes}{%
   \@namedef{foottextfontv@r}{\foottextfont}%  % [RS]
+  \@bidi@before@Hy@hyperfootnotes
   \let\@footnotetext\@parafootnotetext
   \let\@LTRfootnotetext\@paraLTRfootnotetext
   \let\@RTLfootnotetext\@paraRTLfootnotetext
@@ -11314,6 +11369,7 @@ bidi implementation of tufte title]
   \let\@mpfootnotetext\@mpparafootnotetext
   \let\@mpLTRfootnotetext\@mpparaLTRfootnotetext
   \let\@mpRTLfootnotetext\@mpparaRTLfootnotetext
+  \@bidi@after@Hy@hyperfootnotes
   \m@make@mppara@footgroup{v@r}%
   \let\mp@footgroupv@r\@mppara@footgroupv@r
   \begingroup
