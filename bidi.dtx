@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v30.6
+v30.7
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/05/19
+Current version release date: 2017/06/09
 
 ___________________
 Vafa Khalighi
@@ -131,6 +131,7 @@ by Vafa Khalighi.
 \generate{\file{geometry-xetex-bidi.def}{\from{\jobname.dtx}{table,geometry-xetex-bidi.def}}}
 \generate{\file{hvfloat-xetex-bidi.def}{\from{\jobname.dtx}{table,hvfloat-xetex-bidi.def}}}
 \generate{\file{hyperref-xetex-bidi.def}{\from{\jobname.dtx}{table,hyperref-xetex-bidi.def}}}
+\generate{\file{imsproc-xetex-bidi.def}{\from{\jobname.dtx}{table,imsproc-xetex-bidi.def}}}
 \generate{\file{leqno-xetex-bidi.def}{\from{\jobname.dtx}{table,leqno-xetex-bidi.def}}}
 \generate{\file{letter-xetex-bidi.def}{\from{\jobname.dtx}{table,letter-xetex-bidi.def}}}
 \generate{\file{lettrine-xetex-bidi.def}{\from{\jobname.dtx}{table,lettrine-xetex-bidi.def}}}
@@ -322,7 +323,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 30.6}}
+%\large Documentation for \textcolor{blue!65!black}{version 30.7}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}\\
 %  \url{https://www.instagram.com/vafa.khalighi}}
@@ -334,7 +335,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 30.6}}
+%Documentation for \textcolor{blue!65!black}{version 30.7}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -385,7 +386,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/05/19, v30.6
+%* 2017/06/09, v30.7
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1142,7 +1143,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{48021}
+%% \CheckSum{48325}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -1167,7 +1168,7 @@ by Vafa Khalighi.
 %
 %
 %    \begin{macrocode}
-\ProvidesFile{amsart-xetex-bidi.def}[2015/11/14 v0.9 bidi adaptations for amsart class for XeTeX engine]
+\ProvidesFile{amsart-xetex-bidi.def}[2017/06/09 v1.0 bidi adaptations for amsart class for XeTeX engine]
 \def\@tocline#1#2#3#4#5#6#7{\relax
   \ifnum #1>\c@tocdepth % then omit
   \else
@@ -1251,6 +1252,7 @@ by Vafa Khalighi.
   \normalfont\bibliofont\labelsep .5em\relax
   \renewcommand\theenumiv{\arabic{enumiv}}\let\p@enumiv\@empty
   \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+  \bidi@@thebibliography@font@hook%
   \list{\@biblabel{\theenumiv}}{\settowidth\labelwidth{\@biblabel{#1}}%
     \leftmargin\labelwidth \advance\leftmargin\labelsep
     \usecounter{enumiv}}%
@@ -1392,7 +1394,7 @@ by Vafa Khalighi.
 %\fi
 % \subsection{\textsf{amsbook-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{amsbook-xetex-bidi.def}[2015/11/14 v1.0 bidi adaptations for amsbook class for XeTeX engine]
+\ProvidesFile{amsbook-xetex-bidi.def}[2017/06/09 v1.1 bidi adaptations for amsbook class for XeTeX engine]
 \def\@tocline#1#2#3#4#5#6#7{\relax
   \ifnum #1>\c@tocdepth % then omit
   \else
@@ -1484,6 +1486,7 @@ by Vafa Khalighi.
   \normalfont\bibliofont\labelsep .5em\relax
   \renewcommand\theenumiv{\arabic{enumiv}}\let\p@enumiv\@empty
   \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+  \bidi@@thebibliography@font@hook%
   \list{\@biblabel{\theenumiv}}{\settowidth\labelwidth{\@biblabel{#1}}%
     \leftmargin\labelwidth \advance\leftmargin\labelsep
     \usecounter{enumiv}}%
@@ -1862,7 +1865,7 @@ by Vafa Khalighi.
 %\fi
 % \subsection{\textsf{article-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{article-xetex-bidi.def}[2015/11/14 v0.5 bidi adaptations for standard article class for XeTeX engine]
+\ProvidesFile{article-xetex-bidi.def}[2017/06/09 v0.6 bidi adaptations for standard article class for XeTeX engine]
 \if@titlepage
   \renewcommand\maketitle{\begin{titlepage}%
   \let\footnotesize\small
@@ -2025,6 +2028,7 @@ by Vafa Khalighi.
      {\section*{\refname}%
       \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -2063,7 +2067,7 @@ by Vafa Khalighi.
 %\fi
 % \subsection{\textsf{artikel1-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{artikel1-xetex-bidi.def}[2015/11/14 v0.3 bidi adaptations for artikel1 class for XeTeX engine]
+\ProvidesFile{artikel1-xetex-bidi.def}[2017/06/09 v0.4 bidi adaptations for artikel1 class for XeTeX engine]
 \renewenvironment{theindex}{%
   \if@twocolumn
     \@restonecolfalse
@@ -2166,6 +2170,7 @@ by Vafa Khalighi.
      {\section*{\refname}%
        \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -2318,7 +2323,7 @@ by Vafa Khalighi.
 %\fi
 % \subsection{\textsf{artikel2-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{artikel2-xetex-bidi.def}[2015/11/14 v0.3 bidi adaptations for artikel2 class for XeTeX engine]
+\ProvidesFile{artikel2-xetex-bidi.def}[2017/06/09 v0.4 bidi adaptations for artikel2 class for XeTeX engine]
 \renewenvironment{theindex}{%
   \if@twocolumn
     \@restonecolfalse
@@ -2435,6 +2440,7 @@ by Vafa Khalighi.
      {\section*{\refname}%
        \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -2576,7 +2582,7 @@ by Vafa Khalighi.
 %\fi
 % \subsection{\textsf{artikel3-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{artikel3-xetex-bidi.def}[2015/11/14 v0.4 bidi adaptations for artikel3 class for XeTeX engine]
+\ProvidesFile{artikel3-xetex-bidi.def}[2017/06/09 v0.5 bidi adaptations for artikel3 class for XeTeX engine]
 \renewenvironment{theindex}{%
   \if@twocolumn
     \@restonecolfalse
@@ -2691,6 +2697,7 @@ by Vafa Khalighi.
      {\section*{\refname}%
        \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -2985,8 +2992,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/05/19}
-\def\bidiversion{v30.6}
+\def\bididate{2017/06/09}
+\def\bidiversion{v30.7}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -3881,6 +3888,7 @@ Bidirectional typesetting in plain TeX and LaTeX]
     \section{\refname}%
     \small%
     \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+    \bidi@@thebibliography@font@hook%
     \begin{list}{\bibliographyitemlabel}%
       {%
         \setlength{\topsep}{0pt}%
@@ -7217,7 +7225,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{boek3-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{boek3-xetex-bidi.def}[2015/11/14 v0.3 bidi adaptations for boek3 class for XeTeX engine]
+\ProvidesFile{boek3-xetex-bidi.def}[2017/06/09 v0.4 bidi adaptations for boek3 class for XeTeX engine]
 \renewenvironment{theindex}{%
   \if@twocolumn
     \@restonecolfalse
@@ -7303,6 +7311,7 @@ bidi implementation of tufte title]
      {\chapter*{\bibname}%
        \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -7400,7 +7409,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{boek-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{boek-xetex-bidi.def}[2015/11/14 v0.3 bidi adaptations for boek class for XeTeX engine]
+\ProvidesFile{boek-xetex-bidi.def}[2017/06/09 v0.4 bidi adaptations for boek class for XeTeX engine]
 \renewenvironment{theindex}{%
   \if@twocolumn
     \@restonecolfalse
@@ -7497,6 +7506,7 @@ bidi implementation of tufte title]
      {\chapter*{\bibname}%
        \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -7623,7 +7633,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{book-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{book-xetex-bidi.def}[2015/11/14 v0.9 bidi adaptations for standard book class for XeTeX engine]
+\ProvidesFile{book-xetex-bidi.def}[2017/06/09 v1.0 bidi adaptations for standard book class for XeTeX engine]
 \renewenvironment{theindex}
                {\if@twocolumn
                   \@restonecolfalse
@@ -7819,6 +7829,7 @@ bidi implementation of tufte title]
      {\chapter*{\bibname}%
       \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -9283,7 +9294,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{extarticle-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{extarticle-xetex-bidi.def}[2015/11/14 v0.3 bidi adaptations for extarticle class for XeTeX engine]
+\ProvidesFile{extarticle-xetex-bidi.def}[2017/06/09 v0.4 bidi adaptations for extarticle class for XeTeX engine]
 \renewcommand*\l@section[2]{%
   \ifnum \c@tocdepth >\z@
     \addpenalty\@secpenalty
@@ -9342,6 +9353,7 @@ bidi implementation of tufte title]
      {\section*{\refname
         \@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}}%
          \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+         \bidi@@thebibliography@font@hook%
          \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -9462,7 +9474,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{extbook-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{extbook-xetex-bidi.def}[2010/07/25 v0.3 bidi adaptations for extbook class for XeTeX engine]
+\ProvidesFile{extbook-xetex-bidi.def}[2017/06/09 v0.4 bidi adaptations for extbook class for XeTeX engine]
   \if@titlepage
   \renewcommand\maketitle{\begin{titlepage}%
   \let\footnotesize\small
@@ -9619,6 +9631,7 @@ bidi implementation of tufte title]
      {\chapter*{\bibname
         \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -11632,7 +11645,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{extreport-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{extreport-xetex-bidi.def}[2015/11/14 v0.2 bidi adaptations for extreport class for XeTeX engine]
+\ProvidesFile{extreport-xetex-bidi.def}[2017/06/09 v0.3 bidi adaptations for extreport class for XeTeX engine]
 \renewcommand*\l@part[2]{%
   \ifnum \c@tocdepth >-2\relax
     \addpenalty{-\@highpenalty}%
@@ -11695,6 +11708,7 @@ bidi implementation of tufte title]
      {\chapter*{\bibname
         \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -13869,6 +13883,99 @@ bidi implementation of tufte title]
 %    \end{macrocode}
 % \iffalse
 %</hyperref-xetex-bidi.def>
+%<*imsproc-xetex-bidi.def>
+%\fi
+% \subsection{\textsf{imsproc-xetex-bidi.def}}
+%    \begin{macrocode}
+\ProvidesFile{imsproc-xetex-bidi.def}[2017/06/09 v0.1 bidi adaptations for imsproc class for XeTeX engine]
+\newenvironment{thebibliography}[1]{%
+  \@bibtitlestyle
+  \normalfont\bibliofont\labelsep .5em\relax
+  \renewcommand\theenumiv{\arabic{enumiv}}\let\p@enumiv\@empty
+  \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+  \bidi@@thebibliography@font@hook
+  \list{\@biblabel{\theenumiv}}{\settowidth\labelwidth{\@biblabel{#1}}%
+    \leftmargin\labelwidth \advance\leftmargin\labelsep
+    \usecounter{enumiv}}%
+  \sloppy \clubpenalty\@M \widowpenalty\clubpenalty
+  \sfcode`\.=\@m
+}{%
+  \def\@noitemerr{\@latex@warning{Empty `thebibliography' environment}}%
+  \endlist
+}
+
+\def\theindex{\@restonecoltrue\if@twocolumn\@restonecolfalse\fi
+  \columnseprule\z@ \columnsep 35\p@
+  \@indextitlestyle
+  \thispagestyle{plain}%
+  \let\item\@idxitem
+  \parindent\z@  \parskip\z@\@plus.3\p@\relax
+  \if@RTL\raggedleft\else\raggedright\fi
+  \hyphenpenalty\@M
+  \footnotesize}
+\def\@idxitem{\par\hangindent \if@RTL-\fi2em}
+\def\subitem{\par\hangindent \if@RTL-\fi2em\hspace*{1em}}
+\def\subsubitem{\par\hangindent \if@RTL-\fi3em\hspace*{2em}}
+
+\def\right@footnoterule{%
+  \kern-.4\p@
+  \hbox to \columnwidth{\hskip \dimexpr\columnwidth-5pc\relax \hrulefill }
+  \kern11\p@\kern-\footnotesep} 
+\def\left@footnoterule{\kern-.4\p@
+        \hrule\@width 5pc\kern11\p@\kern-\footnotesep}
+\def\@makefnmark{%
+  \leavevmode
+  \raise.9ex\hbox{\fontsize\sf@size\z@\normalfont\@thefnmark}%
+}
+
+\def\part{\@startsection{part}{0}%
+  \z@{\linespacing\@plus\linespacing}{.5\linespacing}%
+  {\normalfont\bfseries\if@RTL\raggedleft\else\raggedright\fi}}
+\def\@tocline#1#2#3#4#5#6#7{\relax
+  \ifnum #1>\c@tocdepth % then omit
+  \else
+    \par \addpenalty\@secpenalty\addvspace{#2}%
+    \begingroup \hyphenpenalty\@M
+    \@ifempty{#4}{%
+      \@tempdima\csname r@tocindent\number#1\endcsname\relax
+    }{%
+      \@tempdima#4\relax
+    }%
+    \parindent\z@ \if@RTL\rightskip\else\leftskip\fi#3\relax \advance\if@RTL\rightskip\else\leftskip\fi\@tempdima\relax
+    \if@RTL\leftskip\else\rightskip\fi\@pnumwidth plus4em \parfillskip-\@pnumwidth
+    #5\leavevmode\hskip-\@tempdima #6\nobreak\relax
+    \hfil\hbox to\@pnumwidth{\@tocpagenum{#7}}\par
+    \nobreak
+    \endgroup
+  \fi}
+\renewcommand\thesubsection    {\thesection\@SepMark\arabic{subsection}}
+\renewcommand\thesubsubsection {\thesubsection \@SepMark\arabic{subsubsection}}
+\renewcommand\theparagraph     {\thesubsubsection\@SepMark\arabic{paragraph}}
+\renewcommand\thesubparagraph  {\theparagraph\@SepMark\arabic{subparagraph}}
+\def\maketitle{\par
+  \@topnum\z@ % this prevents figures from falling at the top of page 1
+  \@setcopyright
+  \thispagestyle{firstpage}% this sets first page specifications
+  \uppercasenonmath\shorttitle
+  \ifx\@empty\shortauthors \let\shortauthors\shorttitle
+  \else \andify\shortauthors
+  \fi
+  \@maketitle@hook
+  \begingroup
+  \@maketitle
+  \toks@\@xp{\shortauthors}\@temptokena\@xp{\shorttitle}%
+  \toks4{\def\\{ \ignorespaces}}% defend against questionable usage
+  \edef\@tempa{%
+    \@nx\markboth{\the\toks4
+      \@nx\MakeUppercase{\the\toks@}}{\the\@temptokena}}%
+  \@tempa
+  \endgroup
+  \c@footnote\z@
+  \@cleartopmattertags
+}
+%    \end{macrocode}
+% \iffalse
+%</imsproc-xetex-bidi.def>
 %<*leqno-xetex-bidi.def>
 %\fi
 % \subsection{\textsf{leqno-xetex-bidi.def}}
@@ -15247,7 +15354,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{memoir-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{memoir-xetex-bidi.def}[2010/07/25 v0.5 bidi adaptations for memoir class for XeTeX engine]
+\ProvidesFile{memoir-xetex-bidi.def}[2017/06/09 v0.6 bidi adaptations for memoir class for XeTeX engine]
 \renewcommand{\keepthetitle}{%
   \@bsmtitlempty
   \global\let\thanks\relax
@@ -15402,6 +15509,7 @@ bidi implementation of tufte title]
 \renewenvironment{thebibliography}[1]{%
   \bibsection
   \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+  \bidi@@thebibliography@font@hook%
   \begin{bibitemlist}{#1}}{\end{bibitemlist}\postbibhook}
 %    \end{macrocode}
 % \iffalse
@@ -15914,13 +16022,14 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{natbib-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{natbib-xetex-bidi.def}[2011/06/04 v0.1 bidi adaptations for natbib package for XeTeX engine]
+\ProvidesFile{natbib-xetex-bidi.def}[2017/06/09 v0.2 bidi adaptations for natbib package for XeTeX engine]
 \renewenvironment{thebibliography}[1]{%
  \bibsection
  \parindent\z@
  \bibpreamble
  \bibfont
  \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+ \bidi@@thebibliography@font@hook%
  \list{\@biblabel{\the\c@NAT@ctr}}{\@bibsetup{#1}\global\c@NAT@ctr\z@}%
  \ifNAT@openbib
    \renewcommand\newblock{\par}%
@@ -16608,7 +16717,7 @@ to\rtside{\box\bslice\hfil}}
 %\fi
 % \subsection{\textsf{rapport1-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{rapport1-xetex-bidi.def}[2015/11/14 v0.3 bidi adaptations for rapport1 class for XeTeX engine]
+\ProvidesFile{rapport1-xetex-bidi.def}[2017/06/09 v0.4 bidi adaptations for rapport1 class for XeTeX engine]
 \renewenvironment{theindex}{%
   \if@twocolumn
     \@restonecolfalse
@@ -16717,6 +16826,7 @@ to\rtside{\box\bslice\hfil}}
      {\chapter*{\bibname}%
        \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -16869,7 +16979,7 @@ to\rtside{\box\bslice\hfil}}
 %\fi
 % \subsection{\textsf{rapport3-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{rapport3-xetex-bidi.def}[2015/11/14 v0.5 bidi adaptations for rapport3 class for XeTeX engine]
+\ProvidesFile{rapport3-xetex-bidi.def}[2017/06/09 v0.6 bidi adaptations for rapport3 class for XeTeX engine]
 \renewenvironment{theindex}{%
   \if@twocolumn
     \@restonecolfalse
@@ -17117,6 +17227,7 @@ to\rtside{\box\bslice\hfil}}
      {\chapter*{\bibname}%
        \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -17152,7 +17263,7 @@ to\rtside{\box\bslice\hfil}}
 %\fi
 % \subsection{\textsf{refrep-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{refrep-xetex-bidi.def}[2015/11/14 v0.4 bidi adaptations for refrep class for XeTeX engine]
+\ProvidesFile{refrep-xetex-bidi.def}[2017/06/09 v0.5 bidi adaptations for refrep class for XeTeX engine]
 \if@titlepage
   \renewcommand\maketitle{\begin{titlepage}%
   \let\footnotesize\small
@@ -17317,6 +17428,7 @@ to\rtside{\box\bslice\hfil}}
      {\chapter*{\bibname
          \@mkboth{\bibname}{\bibname}}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -17340,7 +17452,7 @@ to\rtside{\box\bslice\hfil}}
 %\fi
 % \subsection{\textsf{report-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{report-xetex-bidi.def}[2015/11/14 v0.7 bidi adaptations for standard report class for XeTeX engine]
+\ProvidesFile{report-xetex-bidi.def}[2017/06/09 v0.8 bidi adaptations for standard report class for XeTeX engine]
 \renewenvironment{theindex}
                {\if@twocolumn
                   \@restonecolfalse
@@ -17526,6 +17638,7 @@ to\rtside{\box\bslice\hfil}}
      {\chapter*{\bibname}%
       \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
       \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+      \bidi@@thebibliography@font@hook%
       \list{\@biblabel{\@arabic\c@enumiv}}%
            {\settowidth\labelwidth{\@biblabel{#1}}%
             \leftmargin\labelwidth
@@ -17685,7 +17798,7 @@ to\rtside{\box\bslice\hfil}}
 %\fi
 % \subsection{\textsf{scrartcl-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{scrartcl-xetex-bidi.def}[2016/09/14 v1.0 bidi adaptations for scrartcl class for XeTeX engine]
+\ProvidesFile{scrartcl-xetex-bidi.def}[2017/06/09 v1.1 bidi adaptations for scrartcl class for XeTeX engine]
 \newcommand{\scr@saved@LTRfootnotetext}{}
 \newcommand{\scr@saved@RTLfootnotetext}{}
 \let\scr@saved@footnotetext\@footnotetext
@@ -17939,6 +18052,7 @@ to\rtside{\box\bslice\hfil}}
     \begin{thebibliography}{#1}
   }%
   \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+  \bidi@@thebibliography@font@hook%
   \list{%
     \@biblabel{\@arabic\c@enumiv}%
   }{%
@@ -18240,7 +18354,7 @@ to\rtside{\box\bslice\hfil}}
 %\fi
 % \subsection{\textsf{scrbook-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{scrbook-xetex-bidi.def}[2016/09/14 v1.0 bidi adaptations for scrbook class for XeTeX engine]
+\ProvidesFile{scrbook-xetex-bidi.def}[2017/06/09 v1.1 bidi adaptations for scrbook class for XeTeX engine]
 \newcommand{\scr@saved@LTRfootnotetext}{}
 \newcommand{\scr@saved@RTLfootnotetext}{}
 \let\scr@saved@footnotetext\@footnotetext
@@ -18525,6 +18639,7 @@ to\rtside{\box\bslice\hfil}}
     \begin{thebibliography}{#1}
   }%
    \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+   \bidi@@thebibliography@font@hook%
   \list{%
     \@biblabel{\@arabic\c@enumiv}%
   }{%
@@ -18952,7 +19067,7 @@ to\rtside{\box\bslice\hfil}}
 %\fi
 % \subsection{\textsf{scrreprt-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{scrreprt-xetex-bidi.def}[2016/09/14 v1.0 bidi adaptations for scrreprt class for XeTeX engine]
+\ProvidesFile{scrreprt-xetex-bidi.def}[2017/06/09 v1.1 bidi adaptations for scrreprt class for XeTeX engine]
 \newcommand{\scr@saved@LTRfootnotetext}{}
 \newcommand{\scr@saved@RTLfootnotetext}{}
 \let\scr@saved@footnotetext\@footnotetext
@@ -19221,6 +19336,7 @@ to\rtside{\box\bslice\hfil}}
     \begin{thebibliography}{#1}
   }%
   \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+  \bidi@@thebibliography@font@hook%
   \list{%
     \@biblabel{\@arabic\c@enumiv}%
   }{%
@@ -19937,7 +20053,7 @@ to\rtside{\box\bslice\hfil}}
 %\fi
 % \subsection{\textsf{tocbibind-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{tocbibind-xetex-bidi.def}[2012/12/12 v0.3 bidi adaptations for tocbibind package for XeTeX engine]
+\ProvidesFile{tocbibind-xetex-bidi.def}[2017/06/09 v0.4 bidi adaptations for tocbibind package for XeTeX engine]
 \if@dotocbib
   \@ifpackageloaded{natbib}{}{% natbib not loaded
     \renewcommand{\bibsection}{\t@cb@bchapsec}
@@ -19946,6 +20062,7 @@ to\rtside{\box\bslice\hfil}}
       \begin{thebibitemlist}{#1}}{\end{thebibitemlist}}}
   \renewenvironment{thebibitemlist}[1]{
     \if@RTL\if@LTRbibitems\@RTLfalse\else\fi\else\if@RTLbibitems\@RTLtrue\else\fi\fi
+    \bidi@@thebibliography@font@hook%
     \list{\@biblabel{\@arabic\c@enumiv}}%
          {\settowidth\labelwidth{\@biblabel{#1}}%
           \leftmargin\labelwidth
@@ -21710,6 +21827,7 @@ to\rtside{\box\bslice\hfil}}
 \def\setRTLbibitems{\@RTLbibitemstrue\@LTRbibitemsfalse}
 \def\setLTRbibitems{\@LTRbibitemstrue\@RTLbibitemsfalse}
 \def\setdefaultbibitems{\@RTLbibitemsfalse\@LTRbibitemsfalse}
+\newcommand*{\bidi@@thebibliography@font@hook}{}
 \def\list#1#2{%
   \ifnum \@listdepth >5\relax
     \@toodeep
@@ -22334,6 +22452,7 @@ $\@@underline{\hbox{#1}}\m@th$\relax\fi\fi}
 \@ifclassloaded{book}{\@ifpackageloaded{flowfram}{}{\input{book-xetex-bidi.def}}}{}
 \@ifclassloaded{bookest}{\input{bookest-xetex-bidi.def}}{}
 \@ifclassloaded{combine}{\input{combine-xetex-bidi.def}}{}
+\@ifclassloaded{imsproc}{\input{imsproc-xetex-bidi.def}}{}
 \@ifpackageloaded{amsmath}{}{%
 \@iftagsloaded{leqno}{\input{leqno-xetex-bidi.def}}{}
 \@iftagsloaded{fleqn}{\input{fleqn-xetex-bidi.def}}{}
