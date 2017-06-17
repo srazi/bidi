@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v30.7
+v30.8
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/06/09
+Current version release date: 2017/06/17
 
 ___________________
 Vafa Khalighi
@@ -323,7 +323,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 30.7}}
+%\large Documentation for \textcolor{blue!65!black}{version 30.8}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}\\
 %  \url{https://www.instagram.com/vafa.khalighi}}
@@ -335,7 +335,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 30.7}}
+%Documentation for \textcolor{blue!65!black}{version 30.8}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -386,7 +386,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/06/09, v30.7
+%* 2017/06/17, v30.8
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1143,7 +1143,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{48325}
+%% \CheckSum{48381}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2992,8 +2992,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/06/09}
-\def\bidiversion{v30.7}
+\def\bididate{2017/06/17}
+\def\bidiversion{v30.8}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -12821,13 +12821,22 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{graphicx-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{graphicx-xetex-bidi.def}[2012/01/01 v0.4 bidi adaptations for graphicx package for XeTeX engine]
+\ProvidesFile{graphicx-xetex-bidi.def}[2017/06/17 v0.5 bidi adaptations for graphicx package for XeTeX engine]
 \def\Grot@box@std#1#2{\ifmmode\else\if@RTL\beginL\fi\fi%
   \Grot@setangle{#1}%
   \setbox\z@\hbox{{\ifmmode\if@RTL\beginR\fi#2\if@RTL\endR\fi\else\if@RTL\beginR\fi#2\if@RTL\endR\fi\fi}}%
   \Grot@x\z@
   \Grot@y\z@
   \Grot@box\ifmmode\else\if@RTL\endL\fi\fi}
+\long\def\Grot@box@kv[#1]#2#3{\ifmmode\else\if@RTL\beginL\fi\fi%
+  \@begin@tempboxa\hbox{\ifmmode\if@RTL\beginR\fi#3\if@RTL\endR\fi\else\if@RTL\beginR\fi#3\if@RTL\endR\fi\fi}%
+    \Grot@x\width \divide\Grot@x\tw@
+    \Grot@y\height \advance\Grot@y-\depth \divide\Grot@y\tw@
+    \setkeys{Grot}{#1}%
+    \setbox\z@\box\@tempboxa
+    \Grot@setangle{#2}%
+    \Grot@box\ifmmode\else\if@RTL\endL\fi\fi
+  \@end@tempboxa}
 \long\def\Gscale@box#1[#2]#3{\ifmmode\else\if@RTL\beginL\fi\fi%
   \leavevmode
   \def\Gscale@x{#1}\def\Gscale@y{#2}%
