@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v30.8
+v30.9
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/06/17
+Current version release date: 2017/08/09
 
 ___________________
 Vafa Khalighi
@@ -322,7 +322,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 30.8}}
+%\large Documentation for \textcolor{blue!65!black}{version 30.9}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}}
 %\setcounter{page}{0}
@@ -333,7 +333,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 30.8}}
+%Documentation for \textcolor{blue!65!black}{version 30.9}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -384,7 +384,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/06/17, v30.8
+%* 2017/08/09, v30.9
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1139,7 +1139,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{48381}
+%% \CheckSum{48386}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2988,8 +2988,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/06/17}
-\def\bidiversion{v30.8}
+\def\bididate{2017/08/09}
+\def\bidiversion{v30.9}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -13304,7 +13304,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{hyperref-xetex-bidi.def}}
 %    \begin{macrocode}
-\ProvidesFile{hyperref-xetex-bidi.def}[2015/11/26 v0.9 bidi adaptations for hyperref package for XeTeX engine]
+\ProvidesFile{hyperref-xetex-bidi.def}[2017/08/09 v1.0 bidi adaptations for hyperref package for XeTeX engine]
 \AtBeginDocument{%
 \def\contentsline#1#2#3#4{%
   \ifx\\#4\\%
@@ -13690,17 +13690,17 @@ bidi implementation of tufte title]
 \fi
 \def\Hy@BeginAnnot#1{%
   \ifmmode\else\beginL\fi%
-  \stepcounter{Hy@AnnotLevel}%
-  \ifnum\value{Hy@AnnotLevel}=\@ne
+  \global\advance\c@Hy@AnnotLevel\@ne
+  \ifnum\c@Hy@AnnotLevel=\@ne
     #1%
   \fi
 }
 \def\Hy@EndAnnot{%
-  \ifnum\value{Hy@AnnotLevel}=\@ne
+  \ifnum\c@Hy@AnnotLevel=\@ne
     \Hy@endcolorlink
     \@pdfm@mark{eann}%
   \fi
-  \addtocounter{Hy@AnnotLevel}\m@ne
+  \global\advance\c@Hy@AnnotLevel\m@ne
   \ifmmode\else\endL\fi%
 }
 \def\hyper@link#1#2#3{%
