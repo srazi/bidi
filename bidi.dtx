@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v30.9
+v31.0
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/08/09
+Current version release date: 2017/08/15
 
 ___________________
 Vafa Khalighi
@@ -173,6 +173,7 @@ by Vafa Khalighi.
 \generate{\file{tabularx-xetex-bidi.def}{\from{\jobname.dtx}{table,tabularx-xetex-bidi.def}}}
 \generate{\file{tabulary-xetex-bidi.def}{\from{\jobname.dtx}{table,tabulary-xetex-bidi.def}}}
 \generate{\file{tc-xetex-bidi.def}{\from{\jobname.dtx}{table,tc-xetex-bidi.def}}}
+\generate{\file{tcolorbox-xetex-bidi.def}{\from{\jobname.dtx}{table,tcolorbox-xetex-bidi.def}}}
 \generate{\file{titlesec-xetex-bidi.def}{\from{\jobname.dtx}{table,titlesec-xetex-bidi.def}}}
 \generate{\file{titletoc-xetex-bidi.def}{\from{\jobname.dtx}{table,titletoc-xetex-bidi.def}}}
 \generate{\file{tocbibind-xetex-bidi.def}{\from{\jobname.dtx}{table,tocbibind-xetex-bidi.def}}}
@@ -322,7 +323,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 30.9}}
+%\large Documentation for \textcolor{blue!65!black}{version 31.0}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}}
 %\setcounter{page}{0}
@@ -333,7 +334,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 30.9}}
+%Documentation for \textcolor{blue!65!black}{version 31.0}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -384,7 +385,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/08/09, v30.9
+%* 2017/08/15, v31.0
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1139,7 +1140,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{48398}
+%% \CheckSum{48425}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2994,8 +2995,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/08/09}
-\def\bidiversion{v30.9}
+\def\bididate{2017/08/15}
+\def\bidiversion{v31.0}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -19974,6 +19975,30 @@ to\rtside{\box\bslice\hfil}}
 %    \end{macrocode}
 % \iffalse
 %</tc-xetex-bidi.def>
+%<*tcolorbox-xetex-bidi.def>
+%\fi
+% \subsection{\textsf{tcolorbox-xetex-bidi.def}}
+%    \begin{macrocode}
+\ProvidesFile{tcolorbox-xetex-bidi.def}[2017/08/15 v0.1 bidi adaptations for tcolorbox package for XeTeX engine]
+\let\endtcb@lrbox=\endminipage
+\let\endtcb@savebox=\endtcb@lrbox
+
+\bidi@patchcmd{\tcb@vbox}{%
+  \let\@footnotetext\@mpfootnotetext%
+}{%
+  \let\@footnotetext\@mpfootnotetext%
+  \let\@LTRfootnotetext\@mpLTRfootnotetext%
+  \let\@RTLfootnotetext\@mpRTLfootnotetext%
+}{}{}
+
+\bidi@patchcmd{\endtcb@vbox}{%
+    \footnoterule%
+}{%
+    \bidi@mpfootnoterule%
+}{}{}
+%    \end{macrocode}
+% \iffalse
+%</tcolorbox-xetex-bidi.def>
 %<*titlesec-xetex-bidi.def>
 %\fi
 % \subsection{\textsf{titlesec-xetex-bidi.def}}
@@ -22572,6 +22597,7 @@ $\@@underline{\hbox{#1}}\m@th$\relax\fi\fi}
 \@ifpackageloaded{rotating}{\input{rotating-xetex-bidi.def}}{}
 \@ifpackageloaded{tabls}{\input{tabls-xetex-bidi.def}}{}
 \@ifpackageloaded{tabulary}{\input{tabulary-xetex-bidi.def}}{}
+\@ifpackageloaded{tcolorbox}{\input{tcolorbox-xetex-bidi.def}}{}
 \@ifpackageloaded{tocstyle}{\input{tocstyle-xetex-bidi.def}}{}
 \@ifpackageloaded{tocbibind}{\@ifclassloaded{memoir}{}{\input{tocbibind-xetex-bidi.def}}}{}
 \@ifpackageloaded{tocloft}{\@ifclassloaded{memoir}{}{\input{tocloft-xetex-bidi.def}}}{}
