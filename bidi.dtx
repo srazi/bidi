@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v31.0
+v31.1
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/08/15
+Current version release date: 2017/08/27
 
 ___________________
 Vafa Khalighi
@@ -68,7 +68,6 @@ by Vafa Khalighi.
 \generate{\file{amsmath-xetex-bidi.def}{\from{\jobname.dtx}{table,amsmath-xetex-bidi.def}}}
 \generate{\file{amstext-xetex-bidi.def}{\from{\jobname.dtx}{table,amstext-xetex-bidi.def}}}
 \generate{\file{amsthm-xetex-bidi.def}{\from{\jobname.dtx}{table,amsthm-xetex-bidi.def}}}
-\generate{\file{animate-xetex-bidi.def}{\from{\jobname.dtx}{table,animate-xetex-bidi.def}}}
 \generate{\file{array-xetex-bidi.def}{\from{\jobname.dtx}{table,array-xetex-bidi.def}}}
 \generate{\file{article-xetex-bidi.def}{\from{\jobname.dtx}{table,article-xetex-bidi.def}}}
 \generate{\file{artikel1-xetex-bidi.def}{\from{\jobname.dtx}{table,artikel1-xetex-bidi.def}}}
@@ -323,7 +322,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 31.0}}
+%\large Documentation for \textcolor{blue!65!black}{version 31.1}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}}
 %\setcounter{page}{0}
@@ -334,7 +333,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 31.0}}
+%Documentation for \textcolor{blue!65!black}{version 31.1}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -385,7 +384,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/08/15, v31.0
+%* 2017/08/27, v31.1
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1140,7 +1139,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{48425}
+%% \CheckSum{48020}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -1566,238 +1565,6 @@ by Vafa Khalighi.
 %    \end{macrocode}
 % \iffalse
 %</amsthm-xetex-bidi.def>
-%<*animate-xetex-bidi.def>
-%\fi
-% \subsection{\textsf{animate-xetex-bidi.def}}
-%    \begin{macrocode}
-\ProvidesFile{animate-xetex-bidi.def}[2016/05/03 v0.2 bidi adaptations for animate package for XeTeX engine]
-
-
-%user command for embedding animation sequence
-% #1: options
-% #2: frame rate (fps)
-% #3: basename of graphics file sequence (without frame number and extension)
-% #4: first frame (integer)
-% #5: last frame (integer)
-\renewcommand{\animategraphics}[5][]{%
-  \@anim@endsanitize%
-  \leavevmode%
-  \ifpdf\else%
-    \if@anim@grxloaded%
-      \if@anim@xetex%
-        \DeclareGraphicsRule{.mps}{eps}{*}{}%
-      \fi%
-    \else%
-      \if@anim@xetex%
-        \@anim@missing[xetex]{graphicx}%
-      \else%
-        \if@anim@dvipdfmx%
-          \@anim@missing[dvipdfmx]{graphicx}%
-        \else%
-          \@anim@missing{graphicx}%
-        \fi%
-      \fi%
-    \fi%
-  \fi%
-  \@anim@reset% to default settings
-  \begingroup% make use of graphic[xs] search path
-  \beginL%
-  \ifcsname Ginput@path\endcsname%
-    \let\input@path\Ginput@path%
-  \fi%
-  %
-  \setkeys{anim@user}{#1}%
-  \ifthenelse{\boolean{@anim@autoplay}\OR\boolean{@anim@autoresume}}{%
-    \setboolean{@anim@autoplayorresume}{true}%
-  }{}%
-  \ifthenelse{\boolean{@anim@controls}\OR\boolean{@anim@palindrome}}{%
-    \setboolean{@anim@morejs}{true}%
-  }{}%
-  \ifx\empty\@anim@label\empty\else%
-    \setboolean{@anim@morejs}{true}%
-  \fi%
-  \ifthenelse{\NOT\boolean{@anim@controls}\AND\boolean{@anim@step}}{%
-    \setboolean{@anim@loop}{true}%
-  }{}%
-  \def\@anim@base{#3}%
-  \def\@anim@first{#4}%
-  \def\@anim@last{#5}%
-  %
-  \@anim@checkmultipage{\@anim@base}{\@anim@ftype}%test for multipage file
-  \if@anim@multipage\else% cope with wrong user input
-    \ifthenelse{\equal{#4}{}\OR\equal{#5}{}}{%
-      \PackageError{animate}{%
-        Missing frame number in \protect\animategraphics\space command%
-      }{}%
-    }{}%
-    \ifthenelse{\@anim@first<\z@\OR\@anim@last<\z@}{%
-      \PackageError{animate}{%
-        Negative frame numbers not allowed%
-      }{}%
-    }{}%
-  \fi%
-  \def\@anim@relop{>}%
-  \edef\@anim@numtemplate{\@anim@first}%
-  \ifnum\@anim@first>\@anim@last\relax%
-    \edef\@anim@every{-\@anim@every}%
-    \def\@anim@relop{<}%
-    \edef\@anim@numtemplate{\@anim@last}%
-  \fi%
-  \global\@anim@curframe=\@anim@first%
-  \global\@anim@curframe@zb=\z@%
-  %
-  \if@anim@draft%
-    \if@anim@multipage%
-      %store file in a box
-      \@anim@filebox{\@anim@pathtofile}{\@anim@first}%
-    \else%
-      %get file name extension
-      \@anim@getpath{\@anim@base\@anim@first}{\@anim@ftype}%
-      \@anim@filebox{\@anim@pathtofile}{1}%
-    \fi%
-    \@anim@scale{\@anim@box}%
-    %draw draftbox according to dimensions of the first frame
-    \@anim@draftbox%
-  \else%
-    \if@anim@controls%
-      %create button faces only once in the current colour combination
-      \ifcsname
-        btncol:\@anim@bgcolour:\@anim@fgcolour\endcsname\else%
-        \@anim@makebuttons{\the\@anim@num}%
-        \@anim@newkey{btncol:\@anim@bgcolour:\@anim@fgcolour}{\the\@anim@num}%
-      \fi%
-    \fi%
-    \xdef\@anim@nfps{#2\space}% current frame rate
-    \xdef\@anim@nfps{\expandafter\zap@space\@anim@nfps\@empty}%
-    \ifdim\@anim@nfps\p@<\z@%
-      \PackageError{animate}{%
-        Negative frame rate `\@anim@nfps' is not allowed%
-      }{}%
-    \fi%
-    \xdef\@anim@fps{\@anim@nfps}%
-    %
-    %read all frames of the sequence
-    \loop\ifnum\@anim@curframe\@anim@relop\@anim@last\relax\else%
-      \if@anim@multipage%
-        %embed graphics
-        \@anim@ximage{\the\@anim@num}{\the\@anim@curframe@zb}{%
-          \@anim@pathtofile}{\the\@anim@curframe}%
-      \else%
-        %get path to current file end its extension
-        \@anim@getpath{%
-          \@anim@base\@anim@pad{\@anim@numtemplate}{\the\@anim@curframe}%
-        }{\@anim@ftype}%
-        %embed graphics
-        \@anim@ximage{\the\@anim@num}{\the\@anim@curframe@zb}{%
-          \@anim@pathtofile}{1}%
-      \fi%
-      \global\advance\@anim@curframe by \@anim@every%
-      \global\advance\@anim@curframe@zb by \@ne%
-    \repeat%
-    \xdef\@anim@frames{\the\@anim@curframe@zb}% total number
-    \global\@anim@tmpcnt=\@anim@frames%
-    \global\advance\@anim@tmpcnt by -\@ne%
-    \xdef\@anim@maxframe{\the\@anim@tmpcnt}% highest frame index
-    %build timeline from optional timeline file
-    \@anim@sanitizeJS%
-    \if@anim@timeline\@anim@buildtmln{\the\@anim@num}\fi%
-    % if last frame used as poster, write frame num to aux file
-    \ifnum\@anim@poster=\@anim@mone\relax%
-      \@anim@keytoaux{a\the\@anim@num.poster}{\@anim@maxframe}%
-    \fi%
-    %insert animation widget & controls
-    \@anim@insertwidgets{\the\@anim@num}{%
-      \@anim@getkeyval{btncol:\@anim@bgcolour:\@anim@fgcolour}}%
-    \@anim@endsanitize%
-  \fi%
-  \endL%
-  \endgroup%
-  \global\advance\@anim@num by \@ne%
-}%
-%adjust catcode of `:' character within \animategraphics
-\let\@anim@animategraphics\animategraphics
-\def\animategraphics{\@anim@sanitizeColon\@anim@animategraphics}
-
-
-
-%user environment for animating inline graphics
-% #1: options
-% #2: frame rate (fps)
-\renewenvironment{animateinline}[2][]{%
-  \@anim@endsanitize%
-  \leavevmode%
-  \@anim@reset% to default settings
-  \begingroup%
-  \beginL%
-  % make use of graphic[xs] search path
-  \ifcsname Ginput@path\endcsname%
-    \let\input@path\Ginput@path%
-  \fi%
-  \setkeys{anim@user}{#1}%
-  \ifthenelse{\boolean{@anim@autoplay}\OR\boolean{@anim@autoresume}}{%
-    \setboolean{@anim@autoplayorresume}{true}%
-  }{}%
-  \ifthenelse{\boolean{@anim@controls}\OR\boolean{@anim@palindrome}}{%
-    \setboolean{@anim@morejs}{true}%
-  }{}%
-  \ifx\empty\@anim@label\empty\else%
-    \setboolean{@anim@morejs}{true}%
-  \fi%
-  \ifthenelse{\NOT\boolean{@anim@controls}\AND\boolean{@anim@step}}{%
-    \setboolean{@anim@loop}{true}%
-  }{}%
-  \global\@anim@curframe@zb=\z@%
-  \global\@anim@skipfram=\z@%
-  \if@anim@draft\else%
-    %create button faces if necessary
-    \if@anim@controls%
-      \ifcsname
-        btncol:\@anim@bgcolour:\@anim@fgcolour\endcsname\else%
-        \@anim@makebuttons{\the\@anim@num}%
-        \@anim@newkey{btncol:\@anim@bgcolour:\@anim@fgcolour}{\the\@anim@num}%
-      \fi%
-    \fi%
-    \if@anim@step\else%
-      \xdef\@anim@nfps{-1}%
-      \@anim@processfpsarg{#2}%
-    \fi%
-  \fi%
-  \ifdefined\NoHyper\NoHyper\fi% silently suppress any hyperref specials
-  \let\newframe\@anim@@newframe%
-  \let\multiframe\@anim@multiframe%
-  \@anim@beginframe%
-  \ignorespaces%
-}{%
-  \unskip%
-  \@anim@endframe{\the\@anim@num}{\the\@anim@curframe@zb}%
-  \ifdefined\endNoHyper\endNoHyper\fi%
-  \global\advance\@anim@curframe@zb by \@ne%
-  \if@anim@draft\else%
-    \xdef\@anim@frames{\the\@anim@curframe@zb}% total number
-    \global\@anim@tmpcnt=\@anim@frames%
-    \global\advance\@anim@tmpcnt by -\@ne%
-    \xdef\@anim@maxframe{\the\@anim@tmpcnt}% highest frame index
-    %build timeline from optional timeline file
-    \@anim@sanitizeJS%
-    \if@anim@timeline\@anim@buildtmln{\the\@anim@num}\fi%
-    %insert animation widget & controls
-    \@anim@insertwidgets{\the\@anim@num}{%
-      \@anim@getkeyval{btncol:\@anim@bgcolour:\@anim@fgcolour}}%
-    \@anim@endsanitize%
-    % if last frame used as poster, write frame num to aux file
-    \ifnum\@anim@poster=\@anim@mone\relax%
-      \@anim@keytoaux{a\the\@anim@num.poster}{\@anim@maxframe}%
-    \fi%
-  \fi%
-  \endL%
-  \endgroup%
-  \global\advance\@anim@num by \@ne%
-}
-\let\@anim@animateinline\animateinline
-\def\animateinline{\@anim@sanitizeColon\@anim@animateinline}
-%    \end{macrocode}
-% \iffalse
-%</animate-xetex-bidi.def>
 %<*array-xetex-bidi.def>
 %\fi
 % \subsection{\textsf{array-xetex-bidi.def}}
@@ -2995,8 +2762,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/08/15}
-\def\bidiversion{v31.0}
+\def\bididate{2017/08/27}
+\def\bidiversion{v31.1}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -14778,7 +14545,7 @@ bidi implementation of tufte title]
 %\fi
 % \subsection{\textsf{bidi-media9.sty}}
 %    \begin{macrocode}
-\ProvidesExplPackage{bidi-media9}{2016/05/03}{0.2}
+\ProvidesExplPackage{bidi-media9}{2017/08/27}{0.3}
 {bidi fixes for media9 package for the XeTeX engine}
 
 \keys_define:nn{media9/mbtn}{
@@ -14789,16 +14556,16 @@ bidi implementation of tufte title]
   tooltip .value_required:n = {true},
 
   overface .code:n = {
-    %\hbox_set:Nn\l_mix_poster_box{#1}
-    \sbox\l_mix_poster_box{\if@RTL\beginR\fi#1\if@RTL\endR\fi}
+    \sbox\l_mix_poster_box{
+      \bool_if:NTF\g_pbs_lscape_bool{\rotatebox{90}{#1}}{\if@RTL\beginR\fi#1\if@RTL\endR\fi}}
     \mix_pdfxform:n{\l_mix_poster_box}
     \tl_gset:Nx\g_mix_overbtn_tl{\mix_pdflastxform:}
   },
   overface .value_required:n = {true},
 
   downface .code:n = {
-    %\hbox_set:Nn\l_mix_poster_box{#1}
-    \sbox\l_mix_poster_box{\if@RTL\beginR\fi#1\if@RTL\endR\fi}
+    \sbox\l_mix_poster_box{
+      \bool_if:NTF\g_pbs_lscape_bool{\rotatebox{90}{#1}}{\if@RTL\beginR\fi#1\if@RTL\endR\fi}}
     \mix_pdfxform:n{\l_mix_poster_box}
     \tl_gset:Nx\g_mix_downbtn_tl{\mix_pdflastxform:}
   },
@@ -14929,8 +14696,9 @@ bidi implementation of tufte title]
     \mix_pdfobj:nnn{}{dict}{
       /S/JavaScript/JS~(
         try{\l_tmpb_tl}catch(e){console.show();console.println(e)})}}
-    \bool_if:nT{
-      \tl_if_exist_p:c{ann@\l_tmpa_tl}&&
+    \bool_lazy_and:nnT{
+      \tl_if_exist_p:c{ann@\l_tmpa_tl}
+    }{
       !\str_if_eq_x_p:nn{\tl_use:c{ann@\l_tmpa_tl}}{draft}
     }{
       \mix_pdfobj:nnn{}{dict}{
@@ -14946,9 +14714,12 @@ bidi implementation of tufte title]
       }
     }
     \bool_if:nT{
-      \tl_if_exist_p:c{ann@\l_tmpa_tl}&&
-      !\str_if_eq_x_p:nn{\tl_use:c{ann@\l_tmpa_tl}}{draft}||
-      !\tl_if_blank_p:V\l_tmpb_tl
+      \bool_lazy_and_p:nn{
+        \tl_if_exist_p:c{ann@\l_tmpa_tl}
+      }{
+        !\str_if_eq_x_p:nn{\tl_use:c{ann@\l_tmpa_tl}}{draft}
+      }
+      || !\tl_if_blank_p:V\l_tmpb_tl
     }{
       \tl_gput_right:Nx\g_mix_btnactions_tl{~\mix_pdflastobj:}
     }
@@ -14960,11 +14731,10 @@ bidi implementation of tufte title]
   }
 }
 
-
 \RenewDocumentCommand\includemedia{O{}mm}{%#1 options, #2 text/image #3 media file
   \mix_uriend:
   \group_begin:
-  \beginL
+  \mix_beginLTR:
   \leavevmode
   %empty stream as appearance dummy
   \cs_if_exist:NF\g_mix_appearance_tl{
@@ -15211,7 +14981,7 @@ bidi implementation of tufte title]
     % #1:width, #2:height, #3:depth, #4:content (key-value)
     \mix_pdfannot:nnnn{\g_mix_wd_tl}{\g_mix_ht_tl}{\g_mix_dp_tl}{
       /Subtype/RichMedia
-      /F~4\cs_if_exist_use:N\ocgxii@insert@OC
+      /F~4
       /BS~<</W~0/S/S>>
       /Contents~(media~embedded~by~media9~[\g_mix_version_tl~(\g_mix_date_tl)])
       /NM~(\g_mix_label_tl)
@@ -15271,33 +15041,33 @@ bidi implementation of tufte title]
     }{%insert play button overlay
       \mix_insert_btnocg: %create OCG
       \cs_gset_eq:Nc\mix_pbtn:NN{g@mix@pbtn@\g_mix_usrpbtn_tl @tl}
-      %\hbox_set:Nn\l_mix_pbtn_box{\mix_pbtn:NN\g_mix_wd_tl\g_mix_tt_tl}
-      \sbox\l_mix_pbtn_box{\mix_pbtn:NN\g_mix_wd_tl\g_mix_tt_tl}
-      \box_move_down:nn{\g_mix_dp_tl}{
-        \hbox_to_wd:nn{\g_mix_wd_tl}{
-          \vbox_to_ht:nn{\g_mix_tt_tl}{
-            \vss
-            \ocgbase_oc_bdc:n{\g_mix_btnocg_tl}
-            \box_use:N\l_mix_pbtn_box
-            \ocgbase_oc_emc:
+      \group_begin:
+      \cs_if_exist:NT\textdir{\textdir TLT}
+        \sbox\l_mix_pbtn_box{\mix_pbtn:NN\g_mix_wd_tl\g_mix_tt_tl}
+        \box_move_down:nn{\g_mix_dp_tl}{
+          \hbox_to_wd:nn{\g_mix_wd_tl}{
+            \vbox_to_ht:nn{\g_mix_tt_tl}{
+              \vss
+              \ocgbase_oc_bdc:n{\g_mix_btnocg_tl}
+              \box_use:N\l_mix_pbtn_box
+              \ocgbase_oc_emc:
+            }
           }
         }
-      }
+      \group_end:
     }
     \int_gincr:N\g_mix_rmcnt_int
   }
-  \endL
+  \mix_endLTR:
   \group_end:
 }
 \tl_set_eq:NN\l_mix_includemedia_tl\includemedia
 \tl_set:Nn\includemedia{\mix_uribegin:\l_mix_includemedia_tl}
 
-
-
 \RenewDocumentCommand\mediabutton{O{}m}{%#1 options, #2 normal button text
   \mix_uriend:
   \group_begin:
-  \beginL
+  \mix_beginLTR:
   \leavevmode
   %reset various variables
   \tl_gclear:N\g_mix_overbtn_tl
@@ -15317,22 +15087,16 @@ bidi implementation of tufte title]
   \tl_set:Nx\height{\dim_use:N\box_ht:N\l_mix_poster_box}
   \tl_set:Nx\depth {\dim_use:N\box_dp:N\l_mix_poster_box}
   \bool_if:NTF\g_mix_btndraft_bool{\box_use:N\l_mix_poster_box}{
+    \sbox\l_mix_poster_box{\bool_if:NTF\g_pbs_lscape_bool{\rotatebox{90}{
+      \box_use:N\l_mix_poster_box}}{\box_use:N\l_mix_poster_box}}
     \mix_pdfxform:n{\l_mix_poster_box}
     \tl_set:Nx\g_mix_normalbtn_tl{\mix_pdflastxform:}
-    \bool_if:nT{ %dummy Widget for ocgx2, AR seems to need it
-%      \cs_if_exist_p:N\ocgxii@insert@OC && !\tl_if_blank_p:V\ocgxii@insert@OC
-      !\cs_if_exist:NTF\ocgxii@insert@OC{
-        \tl_if_blank_p:V\ocgxii@insert@OC
-      }{
-        \c_true_bool
-      }
-    }{\mix_pdfannot:nnnn{\width}{\height}{\depth}{/Subtype/Widget/F~2}}
     %insert widget annotation
     \mix_pdfannot:nnnn{\width}{\height}{\depth}{
       /Subtype/Widget
       /T~(mbtn@\int_use:N\g_mix_mbtncnt_int)
       \tl_if_empty:NF\g_mix_tooltip_tl{/TU~(\g_mix_tooltip_tl)}
-      /FT/Btn/Ff~65536\cs_if_exist_use:N\ocgxii@insert@OC
+      /FT/Btn/Ff~65536
       \tl_if_empty:NTF\g_mix_downbtn_tl{/H/I}{/H/P}
       /AP~<<
         /N~\g_mix_normalbtn_tl
@@ -15357,12 +15121,12 @@ bidi implementation of tufte title]
     }
     \int_gincr:N\g_mix_mbtncnt_int
   }
-  \endL
+  \mix_endLTR:
   \group_end:
 }
+
 \tl_set_eq:NN\l_mix_mediabutton_tl\mediabutton
 \tl_set:Nn\mediabutton{\mix_uribegin:\l_mix_mediabutton_tl}
-
 
 
 %    \end{macrocode}
@@ -22513,7 +22277,6 @@ $\@@underline{\hbox{#1}}\m@th$\relax\fi\fi}
 \@ifpackageloaded{amsmath}{\input{amsmath-xetex-bidi.def}}{}
 \@ifpackageloaded{amstext}{\input{amstext-xetex-bidi.def}}{}
 \@ifpackageloaded{amsthm}{\input{amsthm-xetex-bidi.def}}{}
-\@ifpackageloaded{animate}{\input{animate-xetex-bidi.def}}{}
 \@ifpackageloaded{breqn}{\input{breqn-xetex-bidi.def}}{}
 \@ifpackageloaded{cals}{\input{cals-xetex-bidi.def}}{}
 \@ifpackageloaded{caption}{\input{caption-xetex-bidi.def}}{}
