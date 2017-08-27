@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v31.1
+v31.2
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -148,6 +148,7 @@ by Vafa Khalighi.
 \generate{\file{ntheorem-xetex-bidi.def}{\from{\jobname.dtx}{table,ntheorem-xetex-bidi.def}}}
 \generate{\file{ntheorem-hyper-xetex-bidi.def}{\from{\jobname.dtx}{table,ntheorem-hyper-xetex-bidi.def}}}
 \generate{\file{overpic-xetex-bidi.def}{\from{\jobname.dtx}{table,overpic-xetex-bidi.def}}}
+\generate{\file{pdfbase-xetex-bidi.def}{\from{\jobname.dtx}{table,pdfbase-xetex-bidi.def}}}
 \generate{\file{pdfpages-xetex-bidi.def}{\from{\jobname.dtx}{table,pdfpages-xetex-bidi.def}}}
 \generate{\file{pgfcorescopes.code-xetex-bidi.def}{\from{\jobname.dtx}{table,pgfcorescopes.code-xetex-bidi.def}}}
 \generate{\file{picinpar-xetex-bidi.def}{\from{\jobname.dtx}{table,picinpar-xetex-bidi.def}}}
@@ -322,7 +323,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 31.1}}
+%\large Documentation for \textcolor{blue!65!black}{version 31.2}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}}
 %\setcounter{page}{0}
@@ -333,7 +334,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 31.1}}
+%Documentation for \textcolor{blue!65!black}{version 31.2}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -384,7 +385,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/08/27, v31.1
+%* 2017/08/27, v31.2
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1139,7 +1140,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{48020}
+%% \CheckSum{48067}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2763,7 +2764,7 @@ by Vafa Khalighi.
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
 \def\bididate{2017/08/27}
-\def\bidiversion{v31.1}
+\def\bidiversion{v31.2}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -15976,6 +15977,45 @@ bidi implementation of tufte title]
 %    \end{macrocode}
 % \iffalse
 %</overpic-xetex-bidi.def>
+%<*pdfbase-xetex-bidi.def>
+%\fi
+% \subsection{\textsf{pdfbase-xetex-bidi.def}}
+%    \begin{macrocode}
+\ProvidesFile{pdfbase-xetex-bidi.def}[2017/08/27 v0.1 bidi adaptations for pdfbase package for XeTeX engine]
+\ExplSyntaxOn
+\cs_set_eq:NN\pbs_outputpage_orig:\@outputpage
+\cs_set_nopar:Npn\@outputpage{
+  \int_gincr:N\g_pbs_page_int
+  \iow_now:Nx\@mainaux{
+    \token_to_str:N\pbs@newkey{pbs@last@page}{\int_use:N\g_pbs_page_int}
+  }
+  \box_if_vertical:cTF{@outputbox}{
+    \bool_set_true:N\l_pbs_is_vertical_bool
+  }{
+    \bool_set_false:N\l_pbs_is_vertical_bool
+  }
+  \hbox_set:Nn\@outputbox{
+    %begin of page
+    \hbox_overlap_right:n{\seq_map_inline:Nn\g_pbs_bop_seq{##1}}
+    \box_use_clear:N\@outputbox
+    %end of page
+    \hbox_overlap_right:n{\seq_map_inline:Nn\g_pbs_eop_seq{##1}}
+    %end of dvi
+    \int_compare:nT{\pbs@last@page=\g_pbs_page_int}{
+      \hbox_overlap_right:n{\seq_map_inline:Nn\g_pbs_eod_seq{##1}}
+    }
+  }
+  \bool_if:NT\l_pbs_is_vertical_bool{
+    \vbox_set:Nn\@outputbox{\box_use_clear:N\@outputbox}
+  }
+  %insert /Properties into current page's resources
+  \pbs_insert_properties_entry:
+  \pbs_outputpage_orig:
+}
+\ExplSyntaxOff
+%    \end{macrocode}
+% \iffalse
+%</pdfbase-xetex-bidi.def>
 %<*pdfpages-xetex-bidi.def>
 %\fi
 % \subsection{\textsf{pdfpages-xetex-bidi.def}}
@@ -22311,6 +22351,7 @@ $\@@underline{\hbox{#1}}\m@th$\relax\fi\fi}
 \@ifpackageloaded{empheq}{\input{empheq-xetex-bidi.def}}{}
 \@ifpackageloaded{framed}{\input{framed-xetex-bidi.def}}{}
 \@ifpackageloaded{overpic}{\input{overpic-xetex-bidi.def}}{}
+\@ifpackageloaded{pdfbase}{\input{pdfbase-xetex-bidi.def}}{}
 \@ifpackageloaded{pdfpages}{\input{pdfpages-xetex-bidi.def}}{}
 \@ifpackageloaded{lettrine}{\input{lettrine-xetex-bidi.def}}{}
 \@ifpackageloaded{listings}{\input{listings-xetex-bidi.def}}{}
