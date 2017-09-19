@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v31.2
+v31.3
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/08/27
+Current version release date: 2017/09/19
 
 ___________________
 Vafa Khalighi
@@ -323,7 +323,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 31.2}}
+%\large Documentation for \textcolor{blue!65!black}{version 31.3}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}}
 %\setcounter{page}{0}
@@ -334,7 +334,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 31.2}}
+%Documentation for \textcolor{blue!65!black}{version 31.3}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -385,7 +385,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/08/27, v31.2
+%* 2017/09/19, v31.3
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1140,7 +1140,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{48067}
+%% \CheckSum{48388}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2763,8 +2763,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/08/27}
-\def\bidiversion{v31.2}
+\def\bididate{2017/09/19}
+\def\bidiversion{v31.3}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -3683,7 +3683,7 @@ Bidirectional typesetting in plain TeX and LaTeX]
 % \subsection{\textsf{biditools.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{biditools}[2016/11/30 v0.9 Programming tools for bidi package]
+\ProvidesPackage{biditools}[2017/09/19 v1.0 Programming tools for bidi package]
 \providecommand{\@bidi@saveprimitive}[2]{\begingroup\escapechar`\\\relax
   \edef\@tempa{\string#1}\edef\@tempb{\meaning#1}%
   \ifx\@tempa\@tempb \global\let#2#1%
@@ -4406,6 +4406,161 @@ ill-advised in the old versions of bidi package.%
   {\bidi@warning{%
      Patching '\string\end' failed!\MessageBreak
      '\string\bidi@AfterEndEnvironment' will not work\@gobble}}
+
+% General loop macro:
+% \looprepeat
+%   \forvariable{<var>} \fromvalue{<start>} \bystep{<step>} \tovalue{<end>} \downtovalue{<end>}
+%               \untilcondition{<cond>} \whilecondition{<cond>}
+%   \doloopbody { <loop body> }
+% where all control sequences in between \looprepeat and \doloopbody are optional.
+%
+% var: characters to form a control sequence;
+%    after \forvariable{index} you can access the loop counter as \index.
+%    This is a count register; to print it use \number\index.
+% start,step,end: integers with obvious relations to the loop counter;
+%    start and step have a default value of 1
+% cond: (sequence of commands ending in) any TeX \if... test.
+%
+% Count down instead of up with \downtovalue; the increment given in \bystep
+% is always positive, and is added or subtracted accordingly.
+%
+% Tests: \untilcondition is evaluated at the end of the loop body; \whilecondition
+% at the beginning of the loop body.
+%
+% Exit from middle of loop: \breaklooprepeat
+% use this at any place in the loop; in case of a conditional use
+%   \ifsomething ... \expandafter \breaklooprepeat \fi
+%
+% Note that the line ends do not cause spaces in the output.
+%
+% Technical details:
+% The loop body is not executed in a group: the braces are those
+% of a token list.
+% The `forvariable' variable is \let to a \count register.
+
+
+
+% Auxiliary stuff
+\def\bidi@looprepeat@csarg#1#2{\expandafter#1\csname#2\endcsname}
+\def\bidi@looprepeat@csromannumeral#1{\csname #1\romannumeral\bidi@looprepeat@depth\endcsname}
+\def\bidi@looprepeat@csargromannumeral#1#2{\expandafter#1\csname#2\romannumeral\bidi@looprepeat@depth\endcsname}
+
+\newcount\bidi@looprepeat@depth
+\let\endlooprepeat\relax \def\bidi@csprotect{}
+% Trace switches may later be defined by PAC_utils
+\let\bidi@looprepeat@traceinit\relax \let\bidi@looprepeat@traceexit\relax
+
+% Main repeatloop macro
+% - go to next level and allocate unique counter/toks if this is the
+%   first time we visit this level
+% - setup: gather bounds and termination conditions
+% - scoop up body in token list; after the assignment define and
+%   execute body
+\def\looprepeat#1\doloopbody{\bidi@looprepeat@traceinit % exit in \breakrepeatloop
+  \advance\bidi@looprepeat@depth\@ne\relax
+  \bidi@looprepeat@csargromannumeral\ifx{bidi@looprepeat@count}\relax
+    \bidi@looprepeat@csargromannumeral{\csname newcount\expandafter\endcsname}{bidi@looprepeat@count}%
+    \bidi@looprepeat@csargromannumeral{\csname newtoks\expandafter\endcsname}{bidi@looprepeat@toks}%
+    \bidi@looprepeat@csargromannumeral{\csname newtoks\expandafter\endcsname}{bidi@looprepeat@wtest}%
+    \bidi@looprepeat@csargromannumeral{\csname newtoks\expandafter\endcsname}{bidi@looprepeat@utest}%
+  \fi \bidi@looprepeat@zero \def\bidi@looprepeat@sign{}\def\bidi@looprepeat@comp{>}\bidi@looprepeat@setup{#1}%
+  \edef\bidi@looprepeat@tmp
+     {\def\bidi@looprepeat@csargromannumeral\noexpand{bidi@looprepeat@looprepeat}{\bidi@looprepeat@csargromannumeral\noexpand{bidi@looprepeat@body}}}\bidi@looprepeat@tmp
+  \afterassignment\bidi@looprepeat@dxbody\bidi@looprepeat@csromannumeral{bidi@looprepeat@toks}}
+  
+% Define and execute loop body
+% This is done with an \edef to construct the actual sequence
+\def\bidi@looprepeat@dxbody{\bidi@looprepeat@csargromannumeral\edef{bidi@looprepeat@body}{%
+    \bidi@looprepeat@csargromannumeral\the{bidi@looprepeat@wtest}%
+      \noexpand\the\bidi@looprepeat@csargromannumeral\noexpand{bidi@looprepeat@toks}%
+        \bidi@looprepeat@csargromannumeral\the{bidi@looprepeat@utest}%
+    \global\bidi@looprepeat@csargromannumeral\advance{bidi@looprepeat@count} by \bidi@looprepeat@sign\bidi@looprepeat@csromannumeral{bidi@looprepeat@inc}\relax
+    \noexpand\endlooprepeat
+    \bidi@looprepeat@csargromannumeral\noexpand{bidi@looprepeat@looprepeat}}%
+  \bidi@looprepeat@csromannumeral{bidi@looprepeat@body}\ignorespaces}
+  
+% Stop test
+%% In order to stop, issue a
+% \breaklooprepeat which scoops up the rest of the body and exits
+\def\breaklooprepeat#1\endlooprepeat{\bidi@looprepeat@zero\bidi@looprepeat@csargromannumeral\let{bidi@looprepeat@looprepeat}\relax
+  \advance\bidi@looprepeat@depth\m@ne \bidi@looprepeat@traceexit
+  }
+  
+
+% Setup
+% gather bounds and termination conditions
+\def\bidi@looprepeat@setup#1{%
+  \begingroup
+    \def\forvariable##1{%
+      \edef\bidi@looprepeat@tmp{%
+        \global\let\bidi@looprepeat@csarg\noexpand{##1}\bidi@looprepeat@csromannumeral{bidi@looprepeat@count}\ignorespaces}%
+      \bidi@looprepeat@tmp}%
+    \def\fromvalue##1{\bidi@looprepeat@csargromannumeral\global{bidi@looprepeat@count}##1\ignorespaces}%
+    \def\tovalue##1{%
+      \edef\bidi@looprepeat@tmp{\global\bidi@looprepeat@csargromannumeral\noexpand{bidi@looprepeat@wtest}=
+       {\bidi@looprepeat@csargromannumeral\the{bidi@looprepeat@wtest}%
+        \noexpand\ifnum\bidi@looprepeat@csargromannumeral\noexpand{bidi@looprepeat@count}\bidi@looprepeat@comp##1\relax
+          \noexpand\expandafter \noexpand\breaklooprepeat 
+        \noexpand\fi}\ignorespaces}%
+      \bidi@looprepeat@tmp}%
+    \def\downtovalue##1{%
+      \gdef\bidi@looprepeat@sign{-}\gdef\bidi@looprepeat@comp{<}\tovalue{##1}\ignorespaces}%
+    \def\bystep##1{\ifnum##1<0 \bidi@error{LOOPREPEAT: increment has to be a positive value}\@ehc%
+               \bidi@looprepeat@csargromannumeral\gdef{bidi@looprepeat@inc}{-##1}\else
+               \bidi@looprepeat@csargromannumeral\gdef{bidi@looprepeat@inc}{##1}\fi\ignorespaces}%
+    \def\untilcondition##1{%
+      \edef\bidi@looprepeat@tmp{\global\bidi@looprepeat@csargromannumeral\noexpand{bidi@looprepeat@utest}=
+         {\noexpand##1\relax
+          \noexpand\expandafter \noexpand\breaklooprepeat \noexpand\fi}\ignorespaces}%
+      \bidi@looprepeat@tmp}%
+    \def\whilecondition##1{%
+      \edef\bidi@looprepeat@tmp{\global\bidi@looprepeat@csargromannumeral\noexpand{bidi@looprepeat@wtest}=
+         {\noexpand##1\relax \noexpand\else
+          \noexpand\expandafter \noexpand\breaklooprepeat \noexpand\fi}\ignorespaces}%
+    \bidi@looprepeat@tmp}%
+    \fromvalue{\@ne}\bystep{\@ne}#1%
+  \endgroup}
+\def\bidi@looprepeat@zero
+   {\bidi@looprepeat@csromannumeral{bidi@looprepeat@toks}{}\bidi@looprepeat@csromannumeral{bidi@looprepeat@utest}{}\bidi@looprepeat@csromannumeral{bidi@looprepeat@wtest}{}%
+    \bidi@looprepeat@csargromannumeral\def{bidi@looprepeat@body}{}}     
+
+%\tracingmacros2
+%\newcount\tmpcount % used in some examples below
+
+%\looprepeat \forvariable{i}
+%        \bystep{2}
+%  \doloopbody {%
+%     \ifnum\i=13 \expandafter\breaklooprepeat \fi
+%     \number\i{} %
+%}%
+
+%\looprepeat \forvariable{iii}
+%        \tovalue{8}
+%   \doloopbody {}
+%After loop: \number\iii%
+
+%\looprepeat \forvariable{i}
+%        \fromvalue{10}
+%        \bystep{2}
+%        \downtovalue{0}
+%   \doloopbody {\number\i{} }
+
+%\looprepeat \forvariable{x} \whilecondition{\ifnum\x<7}
+%   \doloopbody {\number\x{} }
+
+%\looprepeat \tovalue{3} \doloopbody {Hello world! }
+
+%\looprepeat \forvariable{j}
+%        \untilcondition{\tmpcount\j \divide\tmpcount by 37 \noexpand\ifnum\tmpcount=1}
+%  \doloopbody {\number\j{} }
+
+%\looprepeat \forvariable{i} \bystep{2} \tovalue{10} \doloopbody
+% {\looprepeat \forvariable{j} \fromvalue{\i} \bystep{3} \tovalue{18} 
+%  \doloopbody {(\number\i.\number\j) }
+% }
+
+% infinite loop
+%\looprepeat \doloopbody {}
      
 \CheckCommand{\InputIfFileExists}[2]{%
   \IfFileExists{#1}%
