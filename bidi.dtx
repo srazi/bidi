@@ -5,7 +5,7 @@
 %<*readme>
 ___________________
 The bidi package
-v31.3
+v31.4
 
 This package provides a convenient interface for typesetting
 bidirectional texts in Plain TeX and LaTeX, using XeTeX engine.
@@ -25,7 +25,7 @@ a minimal working example showing the issue, and always choose the appropriate
 label for your query (i.e. if you are reporting any bugs, choose `Bug' label). 
 
 
-Current version release date: 2017/09/19
+Current version release date: 2017/09/26
 
 ___________________
 Vafa Khalighi
@@ -323,7 +323,7 @@ by Vafa Khalighi.
 %\changes{v13.9}{2013/09/23}{Added implementaion of the package.}
 % \title{\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}\\
 %\LARGE Bidirectional typesetting in plain \TeX{} and \LaTeX, using \XeTeX{} engine\\[5pt]
-%\large Documentation for \textcolor{blue!65!black}{version 31.3}}
+%\large Documentation for \textcolor{blue!65!black}{version 31.4}}
 % \author{Vafa Khalighi\\
 %  \url{persian-tex@tug.org}}
 %\setcounter{page}{0}
@@ -334,7 +334,7 @@ by Vafa Khalighi.
 %\textcolor{blue!65!black}{\Huge The \textsf{bidi} \textit{Package}}
 %
 %\Large
-%Documentation for \textcolor{blue!65!black}{version 31.3}}
+%Documentation for \textcolor{blue!65!black}{version 31.4}}
 %
 %\vskip 0pt plus 3fill
 %\textit{\large to my Master, \textbf{Ferdowsi The Great}}
@@ -385,7 +385,7 @@ by Vafa Khalighi.
 %* 
 %* Copyright (c) 2009--2017 Vafa Khalighi
 %* 
-%* 2017/09/19, v31.3
+%* 2017/09/26, v31.4
 %* 
 %* License: LaTeX Project Public License, version
 %* 1.3c or higher (your choice)
@@ -1140,7 +1140,7 @@ by Vafa Khalighi.
 %\iffalse
 %<*table>
 %\fi
-%% \CheckSum{48388}
+%% \CheckSum{49112}
 %% \CharacterTable
 %%  {Upper-case    \A\B\C\D\E\F\G\H\I\J\K\L\M\N\O\P\Q\R\S\T\U\V\W\X\Y\Z
 %%   Lower-case    \a\b\c\d\e\f\g\h\i\j\k\l\m\n\o\p\q\r\s\t\u\v\w\x\y\z
@@ -2763,8 +2763,8 @@ by Vafa Khalighi.
 % \subsection{\textsf{bidi.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\def\bididate{2017/09/19}
-\def\bidiversion{v31.3}
+\def\bididate{2017/09/26}
+\def\bidiversion{v31.4}
 \ProvidesPackage{bidi}[\bididate\space \bidiversion\space
 Bidirectional typesetting in plain TeX and LaTeX]
 \edef\@bidi@info{****************************************************^^J%
@@ -3683,7 +3683,7 @@ Bidirectional typesetting in plain TeX and LaTeX]
 % \subsection{\textsf{biditools.sty}}
 %    \begin{macrocode}
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{biditools}[2017/09/19 v1.0 Programming tools for bidi package]
+\ProvidesPackage{biditools}[2017/09/26 v1.1 Programming tools for bidi package]
 \providecommand{\@bidi@saveprimitive}[2]{\begingroup\escapechar`\\\relax
   \edef\@tempa{\string#1}\edef\@tempb{\meaning#1}%
   \ifx\@tempa\@tempb \global\let#2#1%
@@ -4406,6 +4406,288 @@ ill-advised in the old versions of bidi package.%
   {\bidi@warning{%
      Patching '\string\end' failed!\MessageBreak
      '\string\bidi@AfterEndEnvironment' will not work\@gobble}}
+     
+\chardef\bidi@backslash`\\
+\def\bidics#1{\texttt{\char\bidi@backslash#1}}
+
+% anonymous control sequences
+\newcount\bidi@tempcountb
+\newtoks\bidi@temptoksa
+\newtoks\bidi@temptoksb
+     
+% Catcode (re)storing
+%
+\def\bidi@storecatcode#1%
+   {\escapechar\m@ne
+    \bidi@csarg\edef{bidi@restorecatcode\string#1}%
+          {\catcode`\string#1=
+                \the\catcode\expandafter`\string#1}%
+    \catcode\expandafter`\string#1=12\relax
+    \escapechar`\\\relax}
+\def\bidi@restorecatcode#1%
+   {\escapechar\m@ne
+    \csname bidi@restorecatcode\string#1\endcsname
+    \escapechar`\\\relax}
+    
+% Construct a control sequence inside \edef
+%
+\def\bidi@csname#1{\expandafter\noexpand\csname#1\endcsname}
+
+% Construct a control sequence out of #2, and give it to #1
+%
+\def\bidi@csarg#1#2{\expandafter#1\csname#2\endcsname}
+
+% Pick an escapecharacter
+% this presumes that its argument is a character.
+%
+\def\bidi@pickescape#1{\ifnum`#1=\escapechar\else#1\fi}
+
+% Equality of strings.
+% the fast approach: does not work in expansion-only environment.
+%
+\def\bidi@EqualString#1#2{00\fi\def\bidi@eqs@a{#1}\def\bidi@eqs@b{#2}%
+    \ifx\bidi@eqs@a\bidi@eqs@b}
+
+% Test by expansion only
+%
+\def\bidi@EqualStringX#1#2{00\fi
+    \csname if\@bidi@EqualStringX#1&$#2&$\endcsname}
+\def\@bidi@EqualStringX#1#2$#3#4${\ifx#1#3%
+        \ifx#1&true\else\bidi@hop@ES\@bidi@EqualStringX#2$#4$\fi
+    \else false\fi}
+\def\bidi@hop@ES#1\fi#2\fi{\fi\fi#1}
+
+% Lexicographic ordering
+% note the use of \def
+% also note the characters 0,127,255 that are used,
+% these are not supposed to appear in the strings
+%
+{\catcode0=12 \catcode255=12 \catcode127=12
+\gdef\bidi@StringBeforeNC#1#2{00\fi
+  \bidi@CharsBefore#1^^@^^?#2^^ff^^?}
+\gdef\bidi@CharsBeforeNC#1#2^^?#3#4^^?{%
+  \ifcat#1\relax\def\bidi@next{\bidi@CharsBefore#2^^@^^?#3#4^^ff^^?}%
+  \else\ifcat#3\relax\def\bidi@next{\bidi@CharsBefore#1#2^^@^^?#4^^ff^^?}%
+       \else\ifnum\lccode`#1<\lccode`#3
+              \def\bidi@next{\csname iftrue\endcsname}%
+            \else\ifnum\lccode`#1>\lccode`#3
+                   \def\bidi@next{\csname iffalse\endcsname}%
+                 \else\def\bidi@next{\bidi@CharsBefore#2^^?#4^^?}%
+  \fi  \fi  \fi  \fi
+  \bidi@next}
+\gdef\bidi@StringBefore#1#2{00\fi
+  \bidi@CharsBefore#1^^@^^?#2^^ff^^?}
+\gdef\bidi@CharsBefore#1#2^^?#3#4^^?{%
+  \ifnum`#1<`#3
+       \def\bidi@next{\csname iftrue\endcsname}%
+  \else\ifnum`#1>`#3
+       \def\bidi@next{\csname iffalse\endcsname}%
+       \else\def\bidi@next{\bidi@CharsBefore#2^^?#4^^?}%
+  \fi\fi
+  \bidi@next}
+}
+
+% Null argument test
+%
+\def\bidi@empty{}
+\def\bidi@ifempty#1{00\fi\expandafter\ifx\csname bidi@#1@null\endcsname\bidi@@null}
+\def\bidi@ifEmptyX#1{\expandafter\ifx\csname bidi@#1@null\endcsname\bidi@@null}
+%\def\bidi@ifEmpty#1{\def\bidi@cs@a{#1}\ifx\bidi@cs@a\bidi@empty}
+\def\bidi@IsEmptyList#1{00\fi\def\bidi@cs@a{#1}\ifx\cs@a\bidi@empty}
+
+% Next character test
+%
+\def\bidi@NextChar#1#2#3{00\fi
+    \let\bidi@nxt@ch#1\def\bidi@nxt@a{#2}\def\bidi@nxt@b{#3}%
+    \futurelet\bidi@nxt@c\@bidi@ifnxtc}
+\def\bidi@ifNextChar#1#2#3{%
+    \let\bidi@nxt@ch#1\def\bidi@nxt@a{#2}\def\bidi@nxt@b{#3}%
+    \futurelet\bidi@nxt@c\@bidi@ifnxtc}
+\def\@bidi@ifnxtc{\ifx\bidi@nxt@ch\bidi@nxt@c \expandafter\bidi@nxt@a 
+    \else \expandafter\bidi@nxt@b \fi}
+    
+% Test for defined-ness of string as control sequence.
+% works inside \edef
+%
+\def\bidi@undefinedcs#1{00\fi\bidi@csarg\ifx{#1}\relax}    
+
+% Define uniquely defined dummy macros,
+% usually to serve as bumper blocks at the end of a list
+%
+\newcount\bidi@dummies
+\def\DefNewDummy#1{
+    \if\bidi@undefinedcs{#1}\bidi@csarg\edef{#1}{bidi@dum\the\bidi@dummies}
+        \advance\bidi@dummies\@ne
+    \else
+        \bidi@error{Attempt at second definition of `#1'}
+    \fi}
+    
+% string case statement
+% use: \bidi@switch \iftest{...} in:
+%      item1 action1
+%      ...
+%      itemn actionn
+%      default defaultaction [optional]
+%      \endbidi@switch
+% inspired by Jonathan Fine: Some Basic Control Macros
+% Tugboat 12 #4
+%
+\let\@bidi@fi\fi \let\endbidi@switch\relax \DefNewDummy{bidi@default}
+\def\bidi@switch@exit #1 \@bidi@fi #2 \endbidi@switch {\fi #1}
+\def\bidi@switch #1#2#3{\bidi@csarg\ifx{#2}\bidi@default\bidi@switch@exit #3 \@bidi@fi
+  #1{#2}\bidi@switch@exit #3 \@bidi@fi
+  \bidi@switch {#1}
+}
+% this version puts the test object in {}
+\def\bidi@oswitch #1 in: #2 #3; {\bidi@csarg\ifx{#2}\bidi@default\bidi@switch@exit #3 \@bidi@fi
+  #1{#2}\bidi@switch@exit #3 \@bidi@fi
+  \bidi@switch #1 in:
+}
+% this version assumes that the test object is just one character
+\def\bidi@cswitch #1 in: #2 #3; {\bidi@csarg\ifx{#2}\bidi@default\bidi@switch@exit #3 \@bidi@fi
+  #1#2\bidi@switch@exit #3 \@bidi@fi
+  \bidi@cswitch #1 in:
+}
+% this version assumes that the test object can have an optional space
+\def\bidi@bswitch #1 in: #2 #3; {\bidi@csarg\ifx{#2}\bidi@default\bidi@switch@exit #3 \@bidi@fi
+  #1#2 \bidi@switch@exit #3 \@bidi@fi
+  \bidi@bswitch #1 in:
+}
+% this version can cope with significant spaces at the start of #3;
+% #2 is macro argument
+\def\bidi@mswitch #1 in: #2:#3; {\bidi@csarg\ifx{#2}\bidi@default\bidi@switch@exit #3 \@bidi@fi
+  #1{#2}\bidi@switch@exit #3 \@bidi@fi
+  \bidi@mswitch #1 in:
+}
+% idem; #2 does not have to be enclosed in braces
+\def\bidi@fswitch #1 in: #2:#3; {\bidi@csarg\ifx{#2}\bidi@default\bidi@switch@exit #3 \@bidi@fi
+  #1#2 \bidi@switch@exit #3 \@bidi@fi
+  \bidi@fswitch #1 in:
+}
+
+% Routines for taking the value of a string: 
+% if the string is defined as control sequence
+% take the value of that, otherwise take the string itself
+
+% String or value of control sequence
+%
+\def\bidi@w@w#1{\if\bidi@undefinedcs{#1}#1\else \the\csname#1\endcsname\fi}
+
+% String or control sequence
+%
+\def\@bidi@ww#1{\if\bidi@undefinedcs{#1}#1\else \csname#1\endcsname \fi}
+
+% String or \noexpand-ed control sequence;
+% for use in \edef
+%
+\newif\ifbidi@in@label
+\def\@bidi@w@w#1{\if\bidi@undefinedcs{#1}#1\else 
+            \ifbidi@in@label\noexpand\protect\fi \bidi@csname{#1}\fi}
+\newtoks\bidi@are@these@correct
+\def\bidi@t@w@w#1{%
+    \if\bidi@undefinedcs{#1}#1%
+        \ifdefining\bidi@append@to@list\bidi@are@these@correct{#1 }\fi
+    \else 
+        \ifin@label\noexpand\protect\fi \bidi@csname{#1}\fi}
+        
+% List Manipulation ................
+% this assumes that #1 is a list of tokens, #2 is the name of a list
+%
+% Names of lists (and of items to pop into) are given as strings;
+% not as control sequences.
+%
+\newtoks\bidi@toks@lista \newtoks\bidi@toks@listb
+% basic append/prepend macro
+\long\def\@bidi@append@to@cslist#1#2#3{\begingroup\bidi@toks@lista=#2{#3}%
+  \global#1=\expandafter\expandafter\expandafter{\expandafter\the\expandafter#1\the\bidi@toks@lista}\endgroup}
+\long\def\@bidi@prepend@to@cslist#1#2#3{\begingroup\bidi@toks@lista=#2{#3}%
+  \global#1=\expandafter\expandafter\expandafter{\expandafter\the\expandafter\bidi@toks@lista\the#1}\endgroup}
+\def\@bidi@append@to@list{\bidi@csarg\@bidi@append@to@cslist}
+% variations:
+\long\def\bidi@append@to@list#1#2{\@bidi@append@to@list{#1}{}{#2}}
+\def\bidi@append@list@to@list#1#2{%
+  \@bidi@append@to@list{#1}{\expandafter\expandafter\expandafter}{\expandafter\the\csname#2\endcsname}}
+\def\bidi@append@cslist@to@cslist#1#2{%
+  \@bidi@append@to@cslist{#1}\expandafter{\the#2}}
+\def\bidi@append@toks@cs@to@list#1#2{\@bidi@append@to@list{#1}\expandafter{\the#2}}
+
+\let\bidi@willbeunhskip\unhskip
+
+% A few list macros for the user
+\def\NewList:#1 {\bidi@csarg\newtoks{#1}\global\csname#1\endcsname{}}
+\def\EmptyList:#1 {\global\csname#1\endcsname{}}
+\long\def\AppendToList:#1=#2 {\@bidi@append@to@list{#1}{}{#2}}
+\def\TheList:#1 {\let\bidi@oldwbuskip\bidi@willbeunhskip \let\bidi@willbeunhskip\@empty
+    \if\bidi@undefinedcs{#1}\bidi@error{List <#1> undefined}
+    \else\bidi@csarg\the{#1}\fi
+    \let\bidi@willbeunhskip\bidi@oldwbuskip}
+
+\def\bidi@del@tok@from@list#1#2{\begingroup
+    \long\def\bidi@cs@liste##1#2##2\bidi@tok@SM
+       {\bidi@toks@lista{##1}\bidi@toks@listb{##2}%
+        \edef\bidi@cs@listb{\global\bidi@csname{#1}=
+                {\the\bidi@toks@lista\the\bidi@toks@listb}}%
+        \bidi@cs@listb}%
+    \edef\bidi@cs@lista{\noexpand\bidi@cs@liste{}\expandafter\the\csname#1\endcsname\noexpand\bidi@tok@SM}%
+    \bidi@cs@lista \endgroup}
+\def\bidi@in@front@of@list#1{\bidi@csarg{\let\expandafter\bidi@cs@lista}{#1}%
+  \bidi@in@front@of@cslist\bidi@cs@lista}
+\long\def\bidi@in@front@of@cslist#1#2{\begingroup\bidi@toks@lista={#2}%
+  \global#1=\expandafter\expandafter\expandafter{\expandafter\the\expandafter\bidi@toks@lista \the#1}%
+  \endgroup}
+\long\def\bidi@local@in@front@of@list#1#2{\bidi@toks@lista={#2}%
+    \csname#1\endcsname\expandafter\expandafter\expandafter\expandafter\expandafter\expandafter\expandafter
+                {\expandafter\expandafter\expandafter\the\expandafter\expandafter\expandafter\bidi@toks@lista 
+                 \expandafter\the\csname#1\endcsname}%
+    }
+\def\bidi@set@list#1{\bidi@csarg{\let\expandafter\bidi@cs@lista}{#1}%
+  \bidi@set@cslist\bidi@cs@lista}
+\long\def\bidi@set@cslist#1#2{\begingroup\bidi@toks@lista={#2}%
+   \global#1=\expandafter{\the\bidi@toks@lista}\endgroup}
+   
+%%%%%%%%%%%%%%%% Stack macros
+%
+% push in terms of prepending of lists
+\def\bidi@push@cs@onto@cs#1#2{\@bidi@prepend@to@cslist#1\expandafter{\expandafter\\\expandafter{\the#2}}}
+\def\bidi@push@onto#1{\bidi@csarg\bidi@push@onto@cs{#1}}
+\def\bidi@push@onto@cs#1#2{\@bidi@prepend@to@cslist#1{}{\\{#2}}}
+\def\bidi@local@push@onto#1#2{\let\\=\relax 
+    \bidi@local@in@front@of@list{#1}{\\{#2}}}
+% pop via auxiliary macro: #1 is result, #2 is stack
+% two cs arguments
+\def\bidi@pop@cs@into#1#2{\edef\bidi@cs@e
+   {\noexpand\@@bidi@popinto\noexpand#1\noexpand#2\the#2\noexpand\@@bidi@pop}\bidi@cs@e}
+% two string arguments
+\def\bidi@pop@into#1#2{\edef\bidi@cs@e
+   {\noexpand\@@bidi@popinto\bidi@csname{#1}\bidi@csname{#2}\bidi@csarg\the{#2}\noexpand\@@bidi@pop}\bidi@cs@e}
+\long\def\@@bidi@popinto#1#2\\#3#4\@@bidi@pop{#1{#3}#2{#4}}
+\def\bidi@copy@stacktop#1#2{%
+    \edef\bidi@cs@e{\noexpand\@bidi@copy@stacktop
+                   {#1}\bidi@csarg\the{#2}\noexpand\@@bidi@pop}%
+    \bidi@cs@e}
+\def\@bidi@copy@stacktop#1\\#2#3\@@bidi@pop{\csname#1\endcsname#2\relax}
+\newcount\bidi@stack@length \newtoks\bidi@empty@stack \bidi@empty@stack{\\{}}
+\def\bidi@length@of@stack#1{\bidi@csarg\bidi@length@of@csstack{#1}}
+\def\bidi@length@of@csstack#1{\def\\##1{\advance\bidi@stack@length\@ne}%
+  \bidi@stack@length\m@ne \the#1}
+% turn a stack upside down
+\def\bidi@invert@csstack#1{\bidi@length@of@csstack{#1}%
+  \bidi@tempcountb\z@ \bidi@temptoksa\bidi@empty@stack
+  \loop\ifnum\bidi@tempcountb<\bidi@stack@length
+    \bidi@pop@cs@into\bidi@temptoksb#1\advance\bidi@stack@length\m@ne
+    \bidi@push@cs@onto@cs\bidi@temptoksa\bidi@temptoksb
+%    \bidi@append@cslist@to@cslist\bidi@temptoksb\bidi@temptoksa% append a to b
+%    \bidi@temptoksa\bidi@temptoksb
+    \repeat% copy b to a
+  #1\bidi@temptoksa \bidi@temptoksa\bidi@empty@toks}
+% invert a stack into a list
+\def\bidi@x@stack@to@list#1{\bidi@length@of@stack{#1}%
+  \bidi@tempcountb\z@ \bidi@temptoksa\bidi@empty@toks
+  \loop\ifnum\bidi@tempcountb<\bidi@stack@length
+    \bidi@pop@into{bidi@temptoksb}{#1}\advance\bidi@stack@length\m@ne
+    \bidi@append@list@to@list{bidi@temptoksb}{bidi@temptoksa}\repeat
+  \csname#1\endcsname\bidi@temptoksa \bidi@temptoksa\bidi@empty@toks}   
+
 
 % General loop macro:
 % \looprepeat
